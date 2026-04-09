@@ -33,7 +33,7 @@ const meals: Meal[] = [
   {
     name: "Black Bean & Rice Bowl",
     image: "🍚",
-    cost: 2.15,
+    cost: 4.50,
     servings: 4,
     time: "25 min",
     calories: 380,
