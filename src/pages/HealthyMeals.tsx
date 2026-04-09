@@ -5,10 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import {
   Search, Clock, DollarSign, Heart, Flame, Leaf, Star,
-  ChefHat, Users, Filter, ArrowRight, Sparkles
+  ChefHat, Users, Filter, ArrowRight, Sparkles, RefreshCw
 } from "lucide-react";
 import { useState, useCallback } from "react";
-import { RefreshCw } from "lucide-react";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle
 } from "@/components/ui/dialog";
