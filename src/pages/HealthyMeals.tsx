@@ -209,9 +209,18 @@ function generateWeeklyPlan() {
 export default function HealthyMeals() {
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
-  const [selectedMeal, setSelectedMeal] = useState<Meal | null>(null);
+  const [weeklyPlan, setWeeklyPlan] = useState(() => generateWeeklyPlan());
   const [shoppingList, setShoppingList] = useState<string[]>([]);
   const { toast } = useToast();
+
+  const weeklyTotal = weeklyPlan.reduce(
+    (s, d) => s + d.breakfast.cost + d.lunch.cost + d.dinner.cost + d.snack.cost, 0
+  );
+
+  const handleNewPlan = useCallback(() => {
+    setWeeklyPlan(generateWeeklyPlan());
+    toast({ title: "New meal plan generated!", description: "Your weekly plan has been refreshed with new meals." });
+  }, [toast]);
 
   const filtered = meals.filter((m) => {
     const matchSearch = m.name.toLowerCase().includes(search.toLowerCase());
