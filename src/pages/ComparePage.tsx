@@ -1,77 +1,57 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PublicLayout } from "@/components/PublicLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Search, MapPin, SlidersHorizontal, ArrowUpDown, Heart, ShoppingCart } from "lucide-react";
+import { Search, MapPin, ArrowUpDown, Heart, ShoppingCart, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
-const mockProducts = [
-  { id: 1, name: "Organic Free-Range Eggs", brand: "Happy Hen", store: "Trader Joe's", price: 3.49, originalPrice: 4.99, distance: "0.8 mi", category: "Dairy & Eggs", image: "🥚", tags: ["Cheapest", "Organic"], healthy: true },
-  { id: 2, name: "Whole Wheat Bread", brand: "Dave's Killer", store: "Aldi", price: 1.89, originalPrice: 2.49, distance: "1.2 mi", category: "Bakery", image: "🍞", tags: ["Best Value"], healthy: true },
-  { id: 3, name: "Chicken Breast Boneless", brand: "Perdue", store: "Costco", price: 3.29, originalPrice: 5.49, distance: "2.1 mi", category: "Meat", image: "🍗", tags: ["Cheapest"], healthy: true },
-  { id: 4, name: "Organic Whole Milk", brand: "Horizon", store: "Walmart", price: 4.29, originalPrice: 5.79, distance: "0.5 mi", category: "Dairy & Eggs", image: "🥛", tags: ["Popular"], healthy: true },
-  { id: 5, name: "Basmati Rice 5lb", brand: "Royal", store: "Target", price: 6.99, originalPrice: 8.99, distance: "1.5 mi", category: "Grains", image: "🍚", tags: ["Best Value"], healthy: false },
-  { id: 6, name: "Baby Spinach 5oz", brand: "Earthbound Farm", store: "Whole Foods", price: 2.99, originalPrice: 3.99, distance: "1.8 mi", category: "Produce", image: "🥬", tags: ["Organic", "Cheapest"], healthy: true },
-  { id: 7, name: "Greek Yogurt 32oz", brand: "Chobani", store: "Kroger", price: 4.49, originalPrice: 5.99, distance: "0.9 mi", category: "Dairy & Eggs", image: "🥣", tags: ["Popular"], healthy: true },
-  { id: 8, name: "Peanut Butter 16oz", brand: "Jif", store: "Aldi", price: 2.49, originalPrice: 3.29, distance: "1.2 mi", category: "Pantry", image: "🥜", tags: ["Budget-Friendly"], healthy: false },
-  { id: 9, name: "Organic Bananas 1lb", brand: "Dole", store: "Trader Joe's", price: 0.79, originalPrice: 1.19, distance: "0.8 mi", category: "Produce", image: "🍌", tags: ["Cheapest", "Organic"], healthy: true },
-  { id: 10, name: "Avocados (3-pack)", brand: "Fresh", store: "Aldi", price: 2.99, originalPrice: 4.49, distance: "1.2 mi", category: "Produce", image: "🥑", tags: ["Best Value"], healthy: true },
-  { id: 11, name: "Roma Tomatoes 1lb", brand: "Local Farm", store: "Kroger", price: 1.49, originalPrice: 2.29, distance: "0.9 mi", category: "Produce", image: "🍅", tags: ["Budget-Friendly"], healthy: true },
-  { id: 12, name: "Sweet Potatoes 3lb", brand: "Organic Harvest", store: "Whole Foods", price: 3.49, originalPrice: 4.99, distance: "1.8 mi", category: "Produce", image: "🍠", tags: ["Organic"], healthy: true },
-  { id: 13, name: "Broccoli Crowns 1lb", brand: "Green Giant", store: "Walmart", price: 1.29, originalPrice: 1.99, distance: "0.5 mi", category: "Produce", image: "🥦", tags: ["Cheapest"], healthy: true },
-  { id: 14, name: "Ground Turkey 1lb", brand: "Butterball", store: "Target", price: 4.99, originalPrice: 6.49, distance: "1.5 mi", category: "Meat", image: "🥩", tags: ["Popular"], healthy: true },
-  { id: 15, name: "Salmon Fillet 1lb", brand: "Wild Caught", store: "Costco", price: 7.99, originalPrice: 10.99, distance: "2.1 mi", category: "Meat", image: "🐟", tags: ["Best Value", "Organic"], healthy: true },
-  { id: 16, name: "Sourdough Loaf", brand: "La Brea", store: "Whole Foods", price: 3.99, originalPrice: 5.49, distance: "1.8 mi", category: "Bakery", image: "🥖", tags: ["Popular"], healthy: false },
-  { id: 17, name: "Olive Oil Extra Virgin 16oz", brand: "Bertolli", store: "Walmart", price: 5.49, originalPrice: 7.99, distance: "0.5 mi", category: "Pantry", image: "🫒", tags: ["Best Value"], healthy: true },
-  { id: 18, name: "Canned Black Beans 15oz", brand: "Goya", store: "Aldi", price: 0.89, originalPrice: 1.29, distance: "1.2 mi", category: "Pantry", image: "🫘", tags: ["Cheapest", "Budget-Friendly"], healthy: true },
-  { id: 19, name: "Quinoa 1lb", brand: "Bob's Red Mill", store: "Target", price: 4.49, originalPrice: 5.99, distance: "1.5 mi", category: "Grains", image: "🌾", tags: ["Organic"], healthy: true },
-  { id: 20, name: "Bell Peppers (3-pack)", brand: "Fresh", store: "Kroger", price: 2.49, originalPrice: 3.79, distance: "0.9 mi", category: "Produce", image: "🫑", tags: ["Popular"], healthy: true },
-  { id: 21, name: "Strawberries 1lb", brand: "Driscoll's", store: "Trader Joe's", price: 3.49, originalPrice: 4.99, distance: "0.8 mi", category: "Produce", image: "🍓", tags: ["Popular"], healthy: true },
-  { id: 22, name: "Russet Potatoes 5lb", brand: "Idaho", store: "Walmart", price: 2.99, originalPrice: 4.29, distance: "0.5 mi", category: "Produce", image: "🥔", tags: ["Best Value"], healthy: true },
-  { id: 23, name: "Carrots 2lb Bag", brand: "Bolthouse", store: "Aldi", price: 1.19, originalPrice: 1.79, distance: "1.2 mi", category: "Produce", image: "🥕", tags: ["Cheapest"], healthy: true },
-  { id: 24, name: "Cucumber English", brand: "Fresh", store: "Kroger", price: 0.99, originalPrice: 1.49, distance: "0.9 mi", category: "Produce", image: "🥒", tags: ["Budget-Friendly"], healthy: true },
-  { id: 25, name: "Blueberries 6oz", brand: "Driscoll's", store: "Whole Foods", price: 3.99, originalPrice: 5.49, distance: "1.8 mi", category: "Produce", image: "🫐", tags: ["Organic"], healthy: true },
-  { id: 26, name: "Lemons (5-pack)", brand: "Sunkist", store: "Target", price: 2.29, originalPrice: 3.49, distance: "1.5 mi", category: "Produce", image: "🍋", tags: ["Best Value"], healthy: true },
-  { id: 27, name: "Red Onions 3lb", brand: "Local Farm", store: "Aldi", price: 1.69, originalPrice: 2.49, distance: "1.2 mi", category: "Produce", image: "🧅", tags: ["Budget-Friendly"], healthy: true },
-  { id: 28, name: "Garlic 3-pack", brand: "Fresh", store: "Trader Joe's", price: 1.29, originalPrice: 1.99, distance: "0.8 mi", category: "Produce", image: "🧄", tags: ["Cheapest"], healthy: true },
-  { id: 29, name: "Butter Unsalted 1lb", brand: "Kerrygold", store: "Costco", price: 3.99, originalPrice: 5.49, distance: "2.1 mi", category: "Dairy & Eggs", image: "🧈", tags: ["Popular"], healthy: false },
-  { id: 30, name: "Cheddar Cheese Block 8oz", brand: "Tillamook", store: "Kroger", price: 3.49, originalPrice: 4.99, distance: "0.9 mi", category: "Dairy & Eggs", image: "🧀", tags: ["Best Value"], healthy: false },
-  { id: 31, name: "Cottage Cheese 16oz", brand: "Daisy", store: "Walmart", price: 2.79, originalPrice: 3.49, distance: "0.5 mi", category: "Dairy & Eggs", image: "🥛", tags: ["Budget-Friendly"], healthy: true },
-  { id: 32, name: "Heavy Cream 16oz", brand: "Organic Valley", store: "Whole Foods", price: 4.29, originalPrice: 5.79, distance: "1.8 mi", category: "Dairy & Eggs", image: "🥛", tags: ["Organic"], healthy: false },
-  { id: 33, name: "Pork Chops Bone-In 1lb", brand: "Smithfield", store: "Walmart", price: 3.49, originalPrice: 4.99, distance: "0.5 mi", category: "Meat", image: "🥩", tags: ["Cheapest"], healthy: true },
-  { id: 34, name: "Shrimp Raw 1lb", brand: "Sea Best", store: "Costco", price: 6.99, originalPrice: 9.49, distance: "2.1 mi", category: "Meat", image: "🦐", tags: ["Best Value"], healthy: true },
-  { id: 35, name: "Ground Beef 80/20 1lb", brand: "Angus", store: "Kroger", price: 4.79, originalPrice: 6.29, distance: "0.9 mi", category: "Meat", image: "🥩", tags: ["Popular"], healthy: false },
-  { id: 36, name: "Turkey Deli Slices 8oz", brand: "Oscar Mayer", store: "Target", price: 3.99, originalPrice: 5.29, distance: "1.5 mi", category: "Meat", image: "🥩", tags: ["Budget-Friendly"], healthy: true },
-  { id: 37, name: "Tilapia Fillets 1lb", brand: "Wild Catch", store: "Aldi", price: 4.49, originalPrice: 6.99, distance: "1.2 mi", category: "Meat", image: "🐟", tags: ["Cheapest"], healthy: true },
-  { id: 38, name: "Bagels Plain 6-pack", brand: "Thomas'", store: "Kroger", price: 3.29, originalPrice: 4.49, distance: "0.9 mi", category: "Bakery", image: "🥯", tags: ["Popular"], healthy: false },
-  { id: 39, name: "Tortillas Flour 10-pack", brand: "Mission", store: "Walmart", price: 2.49, originalPrice: 3.29, distance: "0.5 mi", category: "Bakery", image: "🫓", tags: ["Budget-Friendly"], healthy: false },
-  { id: 40, name: "Croissants 4-pack", brand: "Bakery Fresh", store: "Trader Joe's", price: 3.99, originalPrice: 5.49, distance: "0.8 mi", category: "Bakery", image: "🥐", tags: ["Best Value"], healthy: false },
-  { id: 41, name: "Canned Tomatoes 28oz", brand: "San Marzano", store: "Target", price: 2.99, originalPrice: 4.29, distance: "1.5 mi", category: "Pantry", image: "🥫", tags: ["Best Value"], healthy: true },
-  { id: 42, name: "Honey 12oz", brand: "Nature Nate's", store: "Whole Foods", price: 5.99, originalPrice: 7.99, distance: "1.8 mi", category: "Pantry", image: "🍯", tags: ["Organic"], healthy: true },
-  { id: 43, name: "Soy Sauce 10oz", brand: "Kikkoman", store: "Walmart", price: 2.29, originalPrice: 3.19, distance: "0.5 mi", category: "Pantry", image: "🫙", tags: ["Cheapest"], healthy: false },
-  { id: 44, name: "Apple Cider Vinegar 16oz", brand: "Bragg", store: "Trader Joe's", price: 3.49, originalPrice: 4.99, distance: "0.8 mi", category: "Pantry", image: "🍶", tags: ["Popular", "Organic"], healthy: true },
-  { id: 45, name: "Coconut Oil 14oz", brand: "Nutiva", store: "Costco", price: 5.49, originalPrice: 7.49, distance: "2.1 mi", category: "Pantry", image: "🥥", tags: ["Best Value"], healthy: true },
-  { id: 46, name: "Oats Old Fashioned 42oz", brand: "Quaker", store: "Aldi", price: 2.99, originalPrice: 4.29, distance: "1.2 mi", category: "Grains", image: "🥣", tags: ["Budget-Friendly"], healthy: true },
-  { id: 47, name: "Brown Rice 2lb", brand: "Lundberg", store: "Whole Foods", price: 3.99, originalPrice: 5.49, distance: "1.8 mi", category: "Grains", image: "🍚", tags: ["Organic"], healthy: true },
-  { id: 48, name: "Pasta Penne 1lb", brand: "Barilla", store: "Walmart", price: 1.29, originalPrice: 1.89, distance: "0.5 mi", category: "Grains", image: "🍝", tags: ["Cheapest"], healthy: false },
-  { id: 49, name: "Lentils Dried 1lb", brand: "Bob's Red Mill", store: "Target", price: 2.49, originalPrice: 3.49, distance: "1.5 mi", category: "Grains", image: "🫘", tags: ["Best Value"], healthy: true },
-  { id: 50, name: "Corn Tortilla Chips 10oz", brand: "Tostitos", store: "Kroger", price: 3.29, originalPrice: 4.49, distance: "0.9 mi", category: "Pantry", image: "🌽", tags: ["Popular"], healthy: false },
-];
+type Product = {
+  id: string;
+  name: string;
+  brand: string;
+  store: string;
+  price: number;
+  original_price: number;
+  distance: string;
+  category: string;
+  image: string;
+  tags: string[];
+  healthy: boolean;
+};
 
 export default function ComparePage() {
   const [query, setQuery] = useState("");
   const [sortBy, setSortBy] = useState("price");
   const [activeCategory, setActiveCategory] = useState("All");
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const categories = ["All", ...Array.from(new Set(mockProducts.map(p => p.category)))];
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("products")
+        .select("id, name, brand, store, price, original_price, distance, category, image, tags, healthy")
+        .order("price", { ascending: true });
 
-  const filtered = mockProducts
+      if (!error && data) {
+        setProducts(data.map(p => ({ ...p, price: Number(p.price), original_price: Number(p.original_price) })));
+      }
+      setLoading(false);
+    };
+    fetchProducts();
+  }, []);
+
+  const categories = ["All", ...Array.from(new Set(products.map(p => p.category)))];
+
+  const filtered = products
     .filter((p) => activeCategory === "All" || p.category === activeCategory)
     .filter((p) => !query || p.name.toLowerCase().includes(query.toLowerCase()) || p.category.toLowerCase().includes(query.toLowerCase()))
     .sort((a, b) => {
       if (sortBy === "price") return a.price - b.price;
-      if (sortBy === "discount") return ((b.originalPrice - b.price) / b.originalPrice) - ((a.originalPrice - a.price) / a.originalPrice);
+      if (sortBy === "discount") return ((b.original_price - b.price) / b.original_price) - ((a.original_price - a.price) / a.original_price);
       return parseFloat(a.distance) - parseFloat(b.distance);
     });
 
@@ -123,53 +103,59 @@ export default function ComparePage() {
         </div>
 
         {/* Results */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {filtered.map((product) => (
-            <div key={product.id} className="bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg transition-all hover:-translate-y-0.5 group">
-              <div className="p-5">
-                <div className="flex items-start justify-between mb-3">
-                  <span className="text-3xl">{product.image}</span>
-                  <Button variant="ghost" size="icon" className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Heart className="h-4 w-4" />
+        {loading ? (
+          <div className="flex items-center justify-center py-20">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        ) : (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {filtered.map((product) => (
+              <div key={product.id} className="bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg transition-all hover:-translate-y-0.5 group">
+                <div className="p-5">
+                  <div className="flex items-start justify-between mb-3">
+                    <span className="text-3xl">{product.image}</span>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Heart className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  <h3 className="font-semibold text-foreground text-sm">{product.name}</h3>
+                  <p className="text-xs text-muted-foreground">{product.brand} · {product.store}</p>
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
+                    <MapPin className="h-3 w-3" />{product.distance}
+                  </div>
+
+                  <div className="flex flex-wrap gap-1 mt-3">
+                    {product.tags.map((tag) => (
+                      <Badge key={tag} variant={tag === "Cheapest" ? "default" : "secondary"} className="text-[10px] px-1.5 py-0">
+                        {tag}
+                      </Badge>
+                    ))}
+                    {product.healthy && (
+                      <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-primary/30 text-primary">
+                        Healthy
+                      </Badge>
+                    )}
+                  </div>
+
+                  <div className="flex items-center justify-between mt-4">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg font-bold text-primary">${product.price.toFixed(2)}</span>
+                      <span className="text-sm line-through text-muted-foreground">${product.original_price.toFixed(2)}</span>
+                    </div>
+                    <Badge variant="destructive" className="text-xs">
+                      -{Math.round(((product.original_price - product.price) / product.original_price) * 100)}%
+                    </Badge>
+                  </div>
+
+                  <Button size="sm" variant="outline" className="w-full mt-3 rounded-lg text-xs">
+                    <ShoppingCart className="h-3.5 w-3.5 mr-1.5" />
+                    Add to List
                   </Button>
                 </div>
-                <h3 className="font-semibold text-foreground text-sm">{product.name}</h3>
-                <p className="text-xs text-muted-foreground">{product.brand} · {product.store}</p>
-                <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
-                  <MapPin className="h-3 w-3" />{product.distance}
-                </div>
-
-                <div className="flex flex-wrap gap-1 mt-3">
-                  {product.tags.map((tag) => (
-                    <Badge key={tag} variant={tag === "Cheapest" ? "default" : "secondary"} className="text-[10px] px-1.5 py-0">
-                      {tag}
-                    </Badge>
-                  ))}
-                  {product.healthy && (
-                    <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-primary/30 text-primary">
-                      Healthy
-                    </Badge>
-                  )}
-                </div>
-
-                <div className="flex items-center justify-between mt-4">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold text-primary">${product.price.toFixed(2)}</span>
-                    <span className="text-sm line-through text-muted-foreground">${product.originalPrice.toFixed(2)}</span>
-                  </div>
-                  <Badge variant="destructive" className="text-xs">
-                    -{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%
-                  </Badge>
-                </div>
-
-                <Button size="sm" variant="outline" className="w-full mt-3 rounded-lg text-xs">
-                  <ShoppingCart className="h-3.5 w-3.5 mr-1.5" />
-                  Add to List
-                </Button>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </PublicLayout>
   );
