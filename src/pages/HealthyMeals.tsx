@@ -537,6 +537,29 @@ export default function HealthyMeals() {
                 </div>
 
                 <div>
+                  <h3 className="text-sm font-semibold text-foreground mb-2">🧾 Ingredients</h3>
+                  <ul className="space-y-1">
+                    {selectedMeal.ingredients.map((item, i) => (
+                      <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
+                        <span className="text-primary mt-0.5">•</span>{item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 className="text-sm font-semibold text-foreground mb-2">👩‍🍳 Instructions</h3>
+                  <ol className="space-y-2">
+                    {selectedMeal.instructions.map((step, i) => (
+                      <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
+                        <span className="text-primary font-bold shrink-0">{i + 1}.</span>
+                        <span>{step}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+
+                <div>
                   <p className="text-xs text-muted-foreground mb-1">Serves {selectedMeal.servings} · {selectedMeal.category}</p>
                   <div className="flex flex-wrap gap-1.5">
                     {selectedMeal.tags.map((tag) => (
