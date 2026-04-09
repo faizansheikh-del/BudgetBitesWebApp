@@ -29,6 +29,22 @@ export default function ComparePage() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [shoppingList, setShoppingList] = useState<Set<string>>(new Set());
+  const { toast } = useToast();
+
+  const toggleListItem = (product: Product) => {
+    setShoppingList(prev => {
+      const next = new Set(prev);
+      if (next.has(product.id)) {
+        next.delete(product.id);
+        toast({ title: "Removed from list", description: product.name });
+      } else {
+        next.add(product.id);
+        toast({ title: "Added to list", description: `${product.name} — $${product.price.toFixed(2)}` });
+      }
+      return next;
+    });
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
