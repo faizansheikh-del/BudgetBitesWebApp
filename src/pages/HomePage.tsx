@@ -72,7 +72,7 @@ export default function HomePage() {
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-              <Button variant="outline" size="lg" className="rounded-xl" asChild>
+              <Button variant="outline" size="lg" className="rounded-xl border-white/30 text-white hover:bg-white/10" asChild>
                 <Link to="/signup">Start Saving</Link>
               </Button>
             </div>
