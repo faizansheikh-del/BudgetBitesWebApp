@@ -150,16 +150,60 @@ const meals: Meal[] = [
 const categories = ["All", "Breakfast", "Lunch", "Dinner"];
 
 const weeklyPlan = [
-  { day: "Monday", meal: "Overnight Oats + Lentil Soup", cost: 2.95 },
-  { day: "Tuesday", meal: "Egg Wrap + Veggie Stir Fry", cost: 4.70 },
-  { day: "Wednesday", meal: "Smoothie + Black Bean Bowl", cost: 3.40 },
-  { day: "Thursday", meal: "Overnight Oats + Pasta Primavera", cost: 3.90 },
-  { day: "Friday", meal: "Egg Wrap + Chicken Sheet Pan", cost: 5.25 },
-  { day: "Saturday", meal: "Smoothie + Tuna Wraps", cost: 3.65 },
-  { day: "Sunday", meal: "Overnight Oats + Lentil Soup", cost: 2.95 },
+  {
+    day: "Monday",
+    breakfast: { name: "Overnight Oats", emoji: "🥣", cost: 1.10 },
+    lunch: { name: "Black Bean & Rice Bowl", emoji: "🍚", cost: 2.15 },
+    dinner: { name: "Lentil Soup", emoji: "🍲", cost: 1.85 },
+    snack: { name: "Banana", emoji: "🍌", cost: 0.25 },
+  },
+  {
+    day: "Tuesday",
+    breakfast: { name: "Egg & Spinach Wrap", emoji: "🌯", cost: 1.50 },
+    lunch: { name: "Tuna Salad Wraps", emoji: "🥬", cost: 2.40 },
+    dinner: { name: "Veggie Stir Fry", emoji: "🥦", cost: 3.20 },
+    snack: { name: "Apple + PB", emoji: "🍎", cost: 0.60 },
+  },
+  {
+    day: "Wednesday",
+    breakfast: { name: "PB Banana Smoothie", emoji: "🍌", cost: 1.25 },
+    lunch: { name: "Pasta Primavera", emoji: "🍝", cost: 2.80 },
+    dinner: { name: "Lentil Soup", emoji: "🍲", cost: 1.85 },
+    snack: { name: "Yogurt", emoji: "🥣", cost: 0.50 },
+  },
+  {
+    day: "Thursday",
+    breakfast: { name: "Overnight Oats", emoji: "🥣", cost: 1.10 },
+    lunch: { name: "Black Bean & Rice Bowl", emoji: "🍚", cost: 2.15 },
+    dinner: { name: "Chicken Sheet Pan", emoji: "🍗", cost: 3.75 },
+    snack: { name: "Carrots + Hummus", emoji: "🥕", cost: 0.55 },
+  },
+  {
+    day: "Friday",
+    breakfast: { name: "Egg & Spinach Wrap", emoji: "🌯", cost: 1.50 },
+    lunch: { name: "Tuna Salad Wraps", emoji: "🥬", cost: 2.40 },
+    dinner: { name: "Veggie Stir Fry", emoji: "🥦", cost: 3.20 },
+    snack: { name: "Trail Mix", emoji: "🥜", cost: 0.45 },
+  },
+  {
+    day: "Saturday",
+    breakfast: { name: "PB Banana Smoothie", emoji: "🍌", cost: 1.25 },
+    lunch: { name: "Pasta Primavera", emoji: "🍝", cost: 2.80 },
+    dinner: { name: "Chicken Sheet Pan", emoji: "🍗", cost: 3.75 },
+    snack: { name: "Banana", emoji: "🍌", cost: 0.25 },
+  },
+  {
+    day: "Sunday",
+    breakfast: { name: "Overnight Oats", emoji: "🥣", cost: 1.10 },
+    lunch: { name: "Black Bean & Rice Bowl", emoji: "🍚", cost: 2.15 },
+    dinner: { name: "Lentil Soup", emoji: "🍲", cost: 1.85 },
+    snack: { name: "Apple + PB", emoji: "🍎", cost: 0.60 },
+  },
 ];
 
-const weeklyTotal = weeklyPlan.reduce((s, d) => s + d.cost, 0);
+const weeklyTotal = weeklyPlan.reduce(
+  (s, d) => s + d.breakfast.cost + d.lunch.cost + d.dinner.cost + d.snack.cost, 0
+);
 
 export default function HealthyMeals() {
   const [search, setSearch] = useState("");
