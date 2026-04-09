@@ -17,6 +17,7 @@ type Product = {
   distance: string;
   category: string;
   image: string;
+  image_url: string;
   tags: string[];
   healthy: boolean;
 };
@@ -33,7 +34,7 @@ export default function ComparePage() {
       setLoading(true);
       const { data, error } = await supabase
         .from("products")
-        .select("id, name, brand, store, price, original_price, distance, category, image, tags, healthy")
+        .select("id, name, brand, store, price, original_price, distance, category, image, image_url, tags, healthy")
         .order("price", { ascending: true });
 
       if (!error && data) {
@@ -111,13 +112,22 @@ export default function ComparePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {filtered.map((product) => (
               <div key={product.id} className="bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg transition-all hover:-translate-y-0.5 group">
-                <div className="p-5">
-                  <div className="flex items-start justify-between mb-3">
-                    <span className="text-3xl">{product.image}</span>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Heart className="h-4 w-4" />
-                    </Button>
-                  </div>
+                <div className="relative h-40 bg-muted overflow-hidden">
+                  {product.image_url ? (
+                    <img
+                      src={product.image_url}
+                      alt={product.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-4xl">{product.image}</div>
+                  )}
+                  <Button variant="ghost" size="icon" className="absolute top-2 right-2 h-8 w-8 bg-background/70 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Heart className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="p-4">
                   <h3 className="font-semibold text-foreground text-sm">{product.name}</h3>
                   <p className="text-xs text-muted-foreground">{product.brand} · {product.store}</p>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">

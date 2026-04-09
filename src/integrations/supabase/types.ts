@@ -313,6 +313,7 @@ export type Database = {
           healthy: boolean
           id: string
           image: string
+          image_url: string
           name: string
           original_price: number
           price: number
@@ -328,6 +329,7 @@ export type Database = {
           healthy?: boolean
           id?: string
           image?: string
+          image_url?: string
           name: string
           original_price: number
           price: number
@@ -343,6 +345,7 @@ export type Database = {
           healthy?: boolean
           id?: string
           image?: string
+          image_url?: string
           name?: string
           original_price?: number
           price?: number
