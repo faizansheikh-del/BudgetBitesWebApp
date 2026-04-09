@@ -15,14 +15,6 @@ import {
 
 const recentSearches = ["Organic Eggs", "Whole Milk", "Chicken Breast", "Avocado"];
 
-const initialList = [
-  { name: "Eggs (12pk)", qty: 1, price: 3.49 },
-  { name: "Whole Wheat Bread", qty: 2, price: 1.89 },
-  { name: "Chicken Breast 1lb", qty: 1, price: 3.29 },
-  { name: "Organic Milk", qty: 1, price: 4.29 },
-  { name: "Baby Spinach", qty: 1, price: 2.99 },
-];
-
 const alternatives = [
   { current: "Horizon Milk ($5.79)", alt: "Store Brand Milk ($3.49)", save: "$2.30" },
   { current: "Dave's Bread ($3.99)", alt: "Aldi Bread ($1.89)", save: "$2.10" },
