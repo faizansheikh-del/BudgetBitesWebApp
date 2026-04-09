@@ -411,6 +411,63 @@ export default function HealthyMeals() {
           </div>
         </div>
       </div>
+
+      {/* Recipe Detail Dialog */}
+      <Dialog open={!!selectedMeal} onOpenChange={(open) => !open && setSelectedMeal(null)}>
+        <DialogContent className="sm:max-w-lg">
+          {selectedMeal && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <span className="text-3xl">{selectedMeal.image}</span>
+                  {selectedMeal.name}
+                </DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4 pt-2">
+                <p className="text-sm text-muted-foreground">{selectedMeal.description}</p>
+
+                <div className="grid grid-cols-4 gap-3 text-center bg-muted/50 rounded-lg p-3">
+                  <div>
+                    <p className="text-sm font-bold text-primary">${selectedMeal.cost.toFixed(2)}</p>
+                    <p className="text-[10px] text-muted-foreground">/serving</p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-foreground">{selectedMeal.calories}</p>
+                    <p className="text-[10px] text-muted-foreground">kcal</p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-foreground">{selectedMeal.protein}</p>
+                    <p className="text-[10px] text-muted-foreground">protein</p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-foreground">{selectedMeal.time}</p>
+                    <p className="text-[10px] text-muted-foreground">time</p>
+                  </div>
+                </div>
+
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">Serves {selectedMeal.servings} · {selectedMeal.category}</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {selectedMeal.tags.map((tag) => (
+                      <Badge key={tag} variant="secondary" className="text-[10px] px-2 py-0.5">{tag}</Badge>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex gap-2 pt-2">
+                  <Button className="flex-1" onClick={() => handleAddToList(selectedMeal)}>
+                    <Heart className={`h-4 w-4 mr-1 ${shoppingList.includes(selectedMeal.name) ? "fill-primary-foreground" : ""}`} />
+                    {shoppingList.includes(selectedMeal.name) ? "Saved" : "Save Meal"}
+                  </Button>
+                  <Button variant="outline" className="flex-1" asChild>
+                    <Link to="/compare">Find Ingredients</Link>
+                  </Button>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </PublicLayout>
   );
 }
