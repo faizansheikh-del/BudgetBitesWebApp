@@ -191,7 +191,50 @@ export default function ComparePage() {
             ))}
           </div>
         )}
+        {/* Bottom spacer when bar is visible */}
+        {shoppingList.size > 0 && <div className="h-20" />}
       </div>
+
+      {/* Floating Shopping List Summary Bar */}
+      {shoppingList.size > 0 && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background/95 backdrop-blur-md shadow-lg">
+          <div className="container px-4 md:px-6 py-3 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center h-10 w-10 rounded-full bg-primary/10">
+                <ShoppingCart className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-foreground">
+                  {shoppingList.size} item{shoppingList.size !== 1 ? "s" : ""} in list
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Est. total: <span className="font-medium text-primary">
+                    ${products.filter(p => shoppingList.has(p.id)).reduce((sum, p) => sum + p.price, 0).toFixed(2)}
+                  </span>
+                  {" · "}
+                  You save: <span className="font-medium text-green-500">
+                    ${products.filter(p => shoppingList.has(p.id)).reduce((sum, p) => sum + (p.original_price - p.price), 0).toFixed(2)}
+                  </span>
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button
+                size="sm"
+                variant="ghost"
+                className="text-xs text-muted-foreground"
+                onClick={() => { setShoppingList(new Set()); toast({ title: "List cleared" }); }}
+              >
+                Clear
+              </Button>
+              <Button size="sm" className="text-xs">
+                <ShoppingCart className="h-3.5 w-3.5 mr-1.5" />
+                View List
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </PublicLayout>
   );
 }
