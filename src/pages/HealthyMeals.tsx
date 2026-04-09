@@ -371,16 +371,21 @@ export default function HealthyMeals() {
 
         {/* Weekly Meal Plan */}
         <div className="bg-card border border-border rounded-xl p-6 md:p-8 mb-12">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-              <Sparkles className="h-5 w-5 text-primary" />
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                <Sparkles className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-foreground">Sample Weekly Meal Plan</h2>
+                <p className="text-sm text-muted-foreground">
+                  Eat healthy all week for just ${weeklyTotal.toFixed(2)}
+                </p>
+              </div>
             </div>
-            <div>
-              <h2 className="text-xl font-bold text-foreground">Sample Weekly Meal Plan</h2>
-              <p className="text-sm text-muted-foreground">
-                Eat healthy all week for just ${weeklyTotal.toFixed(2)}
-              </p>
-            </div>
+            <Button variant="outline" size="sm" onClick={handleNewPlan}>
+              <RefreshCw className="h-4 w-4 mr-1" /> New Plan
+            </Button>
           </div>
           {/* Table Header */}
           <div className="hidden md:grid grid-cols-[100px_1fr_1fr_1fr_1fr_80px] gap-2 px-4 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
