@@ -164,12 +164,25 @@ const weeklyTotal = weeklyPlan.reduce((s, d) => s + d.cost, 0);
 export default function HealthyMeals() {
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
+  const [selectedMeal, setSelectedMeal] = useState<Meal | null>(null);
+  const [shoppingList, setShoppingList] = useState<string[]>([]);
+  const { toast } = useToast();
 
   const filtered = meals.filter((m) => {
     const matchSearch = m.name.toLowerCase().includes(search.toLowerCase());
     const matchCat = activeCategory === "All" || m.category === activeCategory;
     return matchSearch && matchCat;
   });
+
+  const handleAddToList = (meal: Meal) => {
+    if (shoppingList.includes(meal.name)) {
+      setShoppingList((prev) => prev.filter((n) => n !== meal.name));
+      toast({ title: "Removed from list", description: `${meal.name} removed from your meal list.` });
+    } else {
+      setShoppingList((prev) => [...prev, meal.name]);
+      toast({ title: "Added to list!", description: `${meal.name} added to your meal list.` });
+    }
+  };
 
   return (
     <PublicLayout>
