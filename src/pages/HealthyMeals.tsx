@@ -209,6 +209,7 @@ function generateWeeklyPlan() {
 export default function HealthyMeals() {
   const [search, setSearch] = useState("");
   const [selectedMeal, setSelectedMeal] = useState<Meal | null>(null);
+  const [checkedIngredients, setCheckedIngredients] = useState<Set<string>>(new Set());
   const [activeCategory, setActiveCategory] = useState("All");
   const [weeklyPlan, setWeeklyPlan] = useState(() => generateWeeklyPlan());
   const [shoppingList, setShoppingList] = useState<string[]>([]);
