@@ -618,6 +618,46 @@ export default function HealthyMeals() {
           )}
         </DialogContent>
       </Dialog>
+      {/* Shopping List Dialog */}
+      <Dialog open={showShoppingList} onOpenChange={setShowShoppingList}>
+        <DialogContent className="sm:max-w-md max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <ShoppingCart className="h-5 w-5 text-primary" />
+              Shopping List ({shoppingList.length} item{shoppingList.length !== 1 ? "s" : ""})
+            </DialogTitle>
+          </DialogHeader>
+          {shoppingList.length === 0 ? (
+            <p className="text-sm text-muted-foreground text-center py-6">Your shopping list is empty. Add missing ingredients from a recipe!</p>
+          ) : (
+            <div className="space-y-4">
+              <ul className="space-y-2">
+                {shoppingList.map((item, i) => (
+                  <li key={i} className="flex items-center justify-between gap-2 text-sm text-foreground bg-muted/50 rounded-lg px-3 py-2">
+                    <span>{item}</span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-6 w-6 p-0 text-muted-foreground hover:text-destructive"
+                      onClick={() => setShoppingList(prev => prev.filter((_, idx) => idx !== i))}
+                    >
+                      ✕
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" className="flex-1" onClick={() => { setShoppingList([]); setShowShoppingList(false); }}>
+                  Clear All
+                </Button>
+                <Button size="sm" className="flex-1" asChild>
+                  <Link to="/compare">Find Best Prices</Link>
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </PublicLayout>
   );
 }
