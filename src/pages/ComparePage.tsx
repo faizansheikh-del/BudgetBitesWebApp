@@ -229,7 +229,7 @@ export default function ComparePage() {
               >
                 Clear
               </Button>
-              <Button size="sm" className="text-xs">
+              <Button size="sm" className="text-xs" onClick={() => setShowListDialog(true)}>
                 <ShoppingCart className="h-3.5 w-3.5 mr-1.5" />
                 View List
               </Button>
