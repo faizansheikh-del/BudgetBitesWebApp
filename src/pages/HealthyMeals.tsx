@@ -566,10 +566,12 @@ export default function HealthyMeals() {
                       className="mt-3 w-full"
                       onClick={() => {
                         const missing = selectedMeal.ingredients.filter(item => !checkedIngredients.has(item));
-                        toast({
-                          title: `${missing.length} item${missing.length > 1 ? "s" : ""} added to shopping list`,
-                          description: missing.slice(0, 3).join(", ") + (missing.length > 3 ? ` +${missing.length - 3} more` : ""),
+                        setShoppingList(prev => {
+                          const combined = new Set([...prev, ...missing]);
+                          return Array.from(combined);
                         });
+                        setSelectedMeal(null);
+                        setShowShoppingList(true);
                       }}
                     >
                       <ShoppingCart className="h-4 w-4 mr-1.5" />
