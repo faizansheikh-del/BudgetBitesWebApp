@@ -31,6 +31,7 @@ export default function ComparePage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [shoppingList, setShoppingList] = useState<Set<string>>(new Set());
+  const [showListDialog, setShowListDialog] = useState(false);
   const { toast } = useToast();
 
   const toggleListItem = (product: Product) => {
