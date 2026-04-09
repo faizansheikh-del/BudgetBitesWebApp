@@ -150,16 +150,60 @@ const meals: Meal[] = [
 const categories = ["All", "Breakfast", "Lunch", "Dinner"];
 
 const weeklyPlan = [
-  { day: "Monday", meal: "Overnight Oats + Lentil Soup", cost: 2.95 },
-  { day: "Tuesday", meal: "Egg Wrap + Veggie Stir Fry", cost: 4.70 },
-  { day: "Wednesday", meal: "Smoothie + Black Bean Bowl", cost: 3.40 },
-  { day: "Thursday", meal: "Overnight Oats + Pasta Primavera", cost: 3.90 },
-  { day: "Friday", meal: "Egg Wrap + Chicken Sheet Pan", cost: 5.25 },
-  { day: "Saturday", meal: "Smoothie + Tuna Wraps", cost: 3.65 },
-  { day: "Sunday", meal: "Overnight Oats + Lentil Soup", cost: 2.95 },
+  {
+    day: "Monday",
+    breakfast: { name: "Overnight Oats", emoji: "🥣", cost: 1.10 },
+    lunch: { name: "Black Bean & Rice Bowl", emoji: "🍚", cost: 2.15 },
+    dinner: { name: "Lentil Soup", emoji: "🍲", cost: 1.85 },
+    snack: { name: "Banana", emoji: "🍌", cost: 0.25 },
+  },
+  {
+    day: "Tuesday",
+    breakfast: { name: "Egg & Spinach Wrap", emoji: "🌯", cost: 1.50 },
+    lunch: { name: "Tuna Salad Wraps", emoji: "🥬", cost: 2.40 },
+    dinner: { name: "Veggie Stir Fry", emoji: "🥦", cost: 3.20 },
+    snack: { name: "Apple + PB", emoji: "🍎", cost: 0.60 },
+  },
+  {
+    day: "Wednesday",
+    breakfast: { name: "PB Banana Smoothie", emoji: "🍌", cost: 1.25 },
+    lunch: { name: "Pasta Primavera", emoji: "🍝", cost: 2.80 },
+    dinner: { name: "Lentil Soup", emoji: "🍲", cost: 1.85 },
+    snack: { name: "Yogurt", emoji: "🥣", cost: 0.50 },
+  },
+  {
+    day: "Thursday",
+    breakfast: { name: "Overnight Oats", emoji: "🥣", cost: 1.10 },
+    lunch: { name: "Black Bean & Rice Bowl", emoji: "🍚", cost: 2.15 },
+    dinner: { name: "Chicken Sheet Pan", emoji: "🍗", cost: 3.75 },
+    snack: { name: "Carrots + Hummus", emoji: "🥕", cost: 0.55 },
+  },
+  {
+    day: "Friday",
+    breakfast: { name: "Egg & Spinach Wrap", emoji: "🌯", cost: 1.50 },
+    lunch: { name: "Tuna Salad Wraps", emoji: "🥬", cost: 2.40 },
+    dinner: { name: "Veggie Stir Fry", emoji: "🥦", cost: 3.20 },
+    snack: { name: "Trail Mix", emoji: "🥜", cost: 0.45 },
+  },
+  {
+    day: "Saturday",
+    breakfast: { name: "PB Banana Smoothie", emoji: "🍌", cost: 1.25 },
+    lunch: { name: "Pasta Primavera", emoji: "🍝", cost: 2.80 },
+    dinner: { name: "Chicken Sheet Pan", emoji: "🍗", cost: 3.75 },
+    snack: { name: "Banana", emoji: "🍌", cost: 0.25 },
+  },
+  {
+    day: "Sunday",
+    breakfast: { name: "Overnight Oats", emoji: "🥣", cost: 1.10 },
+    lunch: { name: "Black Bean & Rice Bowl", emoji: "🍚", cost: 2.15 },
+    dinner: { name: "Lentil Soup", emoji: "🍲", cost: 1.85 },
+    snack: { name: "Apple + PB", emoji: "🍎", cost: 0.60 },
+  },
 ];
 
-const weeklyTotal = weeklyPlan.reduce((s, d) => s + d.cost, 0);
+const weeklyTotal = weeklyPlan.reduce(
+  (s, d) => s + d.breakfast.cost + d.lunch.cost + d.dinner.cost + d.snack.cost, 0
+);
 
 export default function HealthyMeals() {
   const [search, setSearch] = useState("");
@@ -327,19 +371,46 @@ export default function HealthyMeals() {
               </p>
             </div>
           </div>
-          <div className="space-y-2">
-            {weeklyPlan.map((day) => (
-              <div
-                key={day.day}
-                className="flex items-center justify-between py-3 px-4 rounded-lg hover:bg-muted/50 transition-colors"
-              >
-                <div className="flex items-center gap-4">
-                  <span className="text-sm font-semibold text-foreground w-24">{day.day}</span>
-                  <span className="text-sm text-muted-foreground">{day.meal}</span>
+          {/* Table Header */}
+          <div className="hidden md:grid grid-cols-[100px_1fr_1fr_1fr_1fr_80px] gap-2 px-4 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+            <span>Day</span>
+            <span>🌅 Breakfast</span>
+            <span>☀️ Lunch</span>
+            <span>🌙 Dinner</span>
+            <span>🍎 Snack</span>
+            <span className="text-right">Total</span>
+          </div>
+
+          <div className="space-y-1">
+            {weeklyPlan.map((day) => {
+              const dayTotal = day.breakfast.cost + day.lunch.cost + day.dinner.cost + day.snack.cost;
+              return (
+                <div key={day.day} className="rounded-lg hover:bg-muted/50 transition-colors">
+                  {/* Desktop */}
+                  <div className="hidden md:grid grid-cols-[100px_1fr_1fr_1fr_1fr_80px] gap-2 items-center px-4 py-3">
+                    <span className="text-sm font-semibold text-foreground">{day.day}</span>
+                    <span className="text-sm text-muted-foreground">{day.breakfast.emoji} {day.breakfast.name}</span>
+                    <span className="text-sm text-muted-foreground">{day.lunch.emoji} {day.lunch.name}</span>
+                    <span className="text-sm text-muted-foreground">{day.dinner.emoji} {day.dinner.name}</span>
+                    <span className="text-sm text-muted-foreground">{day.snack.emoji} {day.snack.name}</span>
+                    <span className="text-sm font-bold text-primary text-right">${dayTotal.toFixed(2)}</span>
+                  </div>
+                  {/* Mobile */}
+                  <div className="md:hidden px-4 py-3 space-y-1.5">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-semibold text-foreground">{day.day}</span>
+                      <span className="text-sm font-bold text-primary">${dayTotal.toFixed(2)}</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-1 text-xs text-muted-foreground">
+                      <span>🌅 {day.breakfast.name}</span>
+                      <span>☀️ {day.lunch.name}</span>
+                      <span>🌙 {day.dinner.name}</span>
+                      <span>🍎 {day.snack.name}</span>
+                    </div>
+                  </div>
                 </div>
-                <span className="text-sm font-bold text-primary">${day.cost.toFixed(2)}</span>
-              </div>
-            ))}
+              );
+            })}
             <div className="flex items-center justify-between pt-4 mt-2 border-t border-border px-4">
               <span className="font-semibold text-foreground">Weekly Total</span>
               <span className="text-lg font-bold text-primary">${weeklyTotal.toFixed(2)}</span>
