@@ -304,6 +304,54 @@ export type Database = {
         }
         Relationships: []
       }
+      products: {
+        Row: {
+          brand: string
+          category: string
+          created_at: string
+          distance: string
+          healthy: boolean
+          id: string
+          image: string
+          name: string
+          original_price: number
+          price: number
+          store: string
+          tags: string[]
+          updated_at: string
+        }
+        Insert: {
+          brand?: string
+          category?: string
+          created_at?: string
+          distance?: string
+          healthy?: boolean
+          id?: string
+          image?: string
+          name: string
+          original_price: number
+          price: number
+          store?: string
+          tags?: string[]
+          updated_at?: string
+        }
+        Update: {
+          brand?: string
+          category?: string
+          created_at?: string
+          distance?: string
+          healthy?: boolean
+          id?: string
+          image?: string
+          name?: string
+          original_price?: number
+          price?: number
+          store?: string
+          tags?: string[]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
