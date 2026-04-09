@@ -505,7 +505,7 @@ export default function HealthyMeals() {
 
       {/* Recipe Detail Dialog */}
       <Dialog open={!!selectedMeal} onOpenChange={(open) => !open && setSelectedMeal(null)}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-y-auto">
           {selectedMeal && (
             <>
               <DialogHeader>
