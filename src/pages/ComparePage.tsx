@@ -32,8 +32,12 @@ const mockProducts = [
 export default function ComparePage() {
   const [query, setQuery] = useState("");
   const [sortBy, setSortBy] = useState("price");
+  const [activeCategory, setActiveCategory] = useState("All");
+
+  const categories = ["All", ...Array.from(new Set(mockProducts.map(p => p.category)))];
 
   const filtered = mockProducts
+    .filter((p) => activeCategory === "All" || p.category === activeCategory)
     .filter((p) => !query || p.name.toLowerCase().includes(query.toLowerCase()) || p.category.toLowerCase().includes(query.toLowerCase()))
     .sort((a, b) => {
       if (sortBy === "price") return a.price - b.price;
