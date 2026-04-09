@@ -371,19 +371,46 @@ export default function HealthyMeals() {
               </p>
             </div>
           </div>
-          <div className="space-y-2">
-            {weeklyPlan.map((day) => (
-              <div
-                key={day.day}
-                className="flex items-center justify-between py-3 px-4 rounded-lg hover:bg-muted/50 transition-colors"
-              >
-                <div className="flex items-center gap-4">
-                  <span className="text-sm font-semibold text-foreground w-24">{day.day}</span>
-                  <span className="text-sm text-muted-foreground">{day.meal}</span>
+          {/* Table Header */}
+          <div className="hidden md:grid grid-cols-[100px_1fr_1fr_1fr_1fr_80px] gap-2 px-4 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+            <span>Day</span>
+            <span>🌅 Breakfast</span>
+            <span>☀️ Lunch</span>
+            <span>🌙 Dinner</span>
+            <span>🍎 Snack</span>
+            <span className="text-right">Total</span>
+          </div>
+
+          <div className="space-y-1">
+            {weeklyPlan.map((day) => {
+              const dayTotal = day.breakfast.cost + day.lunch.cost + day.dinner.cost + day.snack.cost;
+              return (
+                <div key={day.day} className="rounded-lg hover:bg-muted/50 transition-colors">
+                  {/* Desktop */}
+                  <div className="hidden md:grid grid-cols-[100px_1fr_1fr_1fr_1fr_80px] gap-2 items-center px-4 py-3">
+                    <span className="text-sm font-semibold text-foreground">{day.day}</span>
+                    <span className="text-sm text-muted-foreground">{day.breakfast.emoji} {day.breakfast.name}</span>
+                    <span className="text-sm text-muted-foreground">{day.lunch.emoji} {day.lunch.name}</span>
+                    <span className="text-sm text-muted-foreground">{day.dinner.emoji} {day.dinner.name}</span>
+                    <span className="text-sm text-muted-foreground">{day.snack.emoji} {day.snack.name}</span>
+                    <span className="text-sm font-bold text-primary text-right">${dayTotal.toFixed(2)}</span>
+                  </div>
+                  {/* Mobile */}
+                  <div className="md:hidden px-4 py-3 space-y-1.5">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-semibold text-foreground">{day.day}</span>
+                      <span className="text-sm font-bold text-primary">${dayTotal.toFixed(2)}</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-1 text-xs text-muted-foreground">
+                      <span>🌅 {day.breakfast.name}</span>
+                      <span>☀️ {day.lunch.name}</span>
+                      <span>🌙 {day.dinner.name}</span>
+                      <span>🍎 {day.snack.name}</span>
+                    </div>
+                  </div>
                 </div>
-                <span className="text-sm font-bold text-primary">${day.cost.toFixed(2)}</span>
-              </div>
-            ))}
+              );
+            })}
             <div className="flex items-center justify-between pt-4 mt-2 border-t border-border px-4">
               <span className="font-semibold text-foreground">Weekly Total</span>
               <span className="text-lg font-bold text-primary">${weeklyTotal.toFixed(2)}</span>
