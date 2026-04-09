@@ -1,15 +1,20 @@
+import { useState } from "react";
 import { PublicLayout } from "@/components/PublicLayout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import {
   Search, ShoppingCart, BarChart3, Store, Bell, Heart,
-  TrendingDown, ArrowRight, Zap, Plus, MapPin, Star, Clock
+  TrendingDown, ArrowRight, Zap, Plus, MapPin, Star, Clock, X, Trash2
 } from "lucide-react";
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger
+} from "@/components/ui/dialog";
 
 const recentSearches = ["Organic Eggs", "Whole Milk", "Chicken Breast", "Avocado"];
 
-const savedList = [
+const initialList = [
   { name: "Eggs (12pk)", qty: 1, price: 3.49 },
   { name: "Whole Wheat Bread", qty: 2, price: 1.89 },
   { name: "Chicken Breast 1lb", qty: 1, price: 3.29 },
@@ -30,7 +35,29 @@ const notifications = [
 ];
 
 export default function UserDashboard() {
+  const [savedList, setSavedList] = useState(initialList);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [newQty, setNewQty] = useState("1");
+  const [newPrice, setNewPrice] = useState("");
+
   const totalList = savedList.reduce((sum, i) => sum + i.price * i.qty, 0);
+
+  const handleAddItem = () => {
+    const name = newName.trim();
+    const qty = parseInt(newQty) || 1;
+    const price = parseFloat(newPrice);
+    if (!name || isNaN(price) || price <= 0) return;
+    setSavedList((prev) => [...prev, { name, qty, price }]);
+    setNewName("");
+    setNewQty("1");
+    setNewPrice("");
+    setDialogOpen(false);
+  };
+
+  const handleRemoveItem = (index: number) => {
+    setSavedList((prev) => prev.filter((_, i) => i !== index));
+  };
 
   return (
     <PublicLayout>
@@ -88,19 +115,74 @@ export default function UserDashboard() {
             <div className="bg-card rounded-xl border border-border p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-foreground">Shopping List</h3>
-                <Button variant="outline" size="sm" className="rounded-lg text-xs">
-                  <Plus className="h-3.5 w-3.5 mr-1" />Add Item
-                </Button>
+                <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button variant="outline" size="sm" className="rounded-lg text-xs">
+                      <Plus className="h-3.5 w-3.5 mr-1" />Add Item
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                      <DialogTitle>Add Item to Shopping List</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4 pt-2">
+                      <div>
+                        <label className="text-sm font-medium text-foreground">Item Name</label>
+                        <Input
+                          placeholder="e.g. Organic Bananas"
+                          value={newName}
+                          onChange={(e) => setNewName(e.target.value)}
+                          className="mt-1"
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-sm font-medium text-foreground">Quantity</label>
+                          <Input
+                            type="number"
+                            min="1"
+                            value={newQty}
+                            onChange={(e) => setNewQty(e.target.value)}
+                            className="mt-1"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-sm font-medium text-foreground">Price ($)</label>
+                          <Input
+                            type="number"
+                            min="0.01"
+                            step="0.01"
+                            placeholder="0.00"
+                            value={newPrice}
+                            onChange={(e) => setNewPrice(e.target.value)}
+                            className="mt-1"
+                          />
+                        </div>
+                      </div>
+                      <Button onClick={handleAddItem} className="w-full">
+                        Add to List
+                      </Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               </div>
               <div className="space-y-2">
-                {savedList.map((item) => (
-                  <div key={item.name} className="flex items-center justify-between py-2 border-b border-border last:border-0">
+                {savedList.map((item, index) => (
+                  <div key={`${item.name}-${index}`} className="flex items-center justify-between py-2 border-b border-border last:border-0 group">
                     <div className="flex items-center gap-3">
                       <div className="h-2 w-2 rounded-full bg-primary" />
                       <span className="text-sm text-foreground">{item.name}</span>
                       {item.qty > 1 && <Badge variant="secondary" className="text-xs">x{item.qty}</Badge>}
                     </div>
-                    <span className="text-sm font-medium text-foreground">${(item.price * item.qty).toFixed(2)}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium text-foreground">${(item.price * item.qty).toFixed(2)}</span>
+                      <button
+                        onClick={() => handleRemoveItem(index)}
+                        className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
