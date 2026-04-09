@@ -35,7 +35,7 @@ export default function HomePage() {
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img src={groceryHeroBg} alt="Fresh groceries" width={1920} height={1080} className="w-full h-full object-cover saturate-[1.3] brightness-90" />
-          <div className="absolute inset-0 bg-black/50 dark:bg-black/60" />
+          <div className="absolute inset-0 bg-black/40 dark:bg-black/50" />
         </div>
         <div className="container px-4 md:px-6 py-20 md:py-32 relative">
           <div className="max-w-3xl mx-auto text-center space-y-6">
