@@ -33,7 +33,10 @@ export default function HomePage() {
     <PublicLayout>
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5" />
+        <div className="absolute inset-0">
+          <img src={groceryHeroBg} alt="Fresh groceries" width={1920} height={1080} className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-background/80 dark:bg-background/85 backdrop-blur-[2px]" />
+        </div>
         <div className="container px-4 md:px-6 py-20 md:py-32 relative">
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm text-primary font-medium">
