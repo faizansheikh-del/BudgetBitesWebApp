@@ -15,6 +15,18 @@ const mockProducts = [
   { id: 6, name: "Baby Spinach 5oz", brand: "Earthbound Farm", store: "Whole Foods", price: 2.99, originalPrice: 3.99, distance: "1.8 mi", category: "Produce", image: "🥬", tags: ["Organic", "Cheapest"], healthy: true },
   { id: 7, name: "Greek Yogurt 32oz", brand: "Chobani", store: "Kroger", price: 4.49, originalPrice: 5.99, distance: "0.9 mi", category: "Dairy & Eggs", image: "🥣", tags: ["Popular"], healthy: true },
   { id: 8, name: "Peanut Butter 16oz", brand: "Jif", store: "Aldi", price: 2.49, originalPrice: 3.29, distance: "1.2 mi", category: "Pantry", image: "🥜", tags: ["Budget-Friendly"], healthy: false },
+  { id: 9, name: "Organic Bananas 1lb", brand: "Dole", store: "Trader Joe's", price: 0.79, originalPrice: 1.19, distance: "0.8 mi", category: "Produce", image: "🍌", tags: ["Cheapest", "Organic"], healthy: true },
+  { id: 10, name: "Avocados (3-pack)", brand: "Fresh", store: "Aldi", price: 2.99, originalPrice: 4.49, distance: "1.2 mi", category: "Produce", image: "🥑", tags: ["Best Value"], healthy: true },
+  { id: 11, name: "Roma Tomatoes 1lb", brand: "Local Farm", store: "Kroger", price: 1.49, originalPrice: 2.29, distance: "0.9 mi", category: "Produce", image: "🍅", tags: ["Budget-Friendly"], healthy: true },
+  { id: 12, name: "Sweet Potatoes 3lb", brand: "Organic Harvest", store: "Whole Foods", price: 3.49, originalPrice: 4.99, distance: "1.8 mi", category: "Produce", image: "🍠", tags: ["Organic"], healthy: true },
+  { id: 13, name: "Broccoli Crowns 1lb", brand: "Green Giant", store: "Walmart", price: 1.29, originalPrice: 1.99, distance: "0.5 mi", category: "Produce", image: "🥦", tags: ["Cheapest"], healthy: true },
+  { id: 14, name: "Ground Turkey 1lb", brand: "Butterball", store: "Target", price: 4.99, originalPrice: 6.49, distance: "1.5 mi", category: "Meat", image: "🥩", tags: ["Popular"], healthy: true },
+  { id: 15, name: "Salmon Fillet 1lb", brand: "Wild Caught", store: "Costco", price: 7.99, originalPrice: 10.99, distance: "2.1 mi", category: "Meat", image: "🐟", tags: ["Best Value", "Organic"], healthy: true },
+  { id: 16, name: "Sourdough Loaf", brand: "La Brea", store: "Whole Foods", price: 3.99, originalPrice: 5.49, distance: "1.8 mi", category: "Bakery", image: "🥖", tags: ["Popular"], healthy: false },
+  { id: 17, name: "Olive Oil Extra Virgin 16oz", brand: "Bertolli", store: "Walmart", price: 5.49, originalPrice: 7.99, distance: "0.5 mi", category: "Pantry", image: "🫒", tags: ["Best Value"], healthy: true },
+  { id: 18, name: "Canned Black Beans 15oz", brand: "Goya", store: "Aldi", price: 0.89, originalPrice: 1.29, distance: "1.2 mi", category: "Pantry", image: "🫘", tags: ["Cheapest", "Budget-Friendly"], healthy: true },
+  { id: 19, name: "Quinoa 1lb", brand: "Bob's Red Mill", store: "Target", price: 4.49, originalPrice: 5.99, distance: "1.5 mi", category: "Grains", image: "🌾", tags: ["Organic"], healthy: true },
+  { id: 20, name: "Bell Peppers (3-pack)", brand: "Fresh", store: "Kroger", price: 2.49, originalPrice: 3.79, distance: "0.9 mi", category: "Produce", image: "🫑", tags: ["Popular"], healthy: true },
 ];
 
 export default function ComparePage() {
