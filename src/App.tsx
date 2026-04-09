@@ -12,6 +12,7 @@ import BudgetPage from "./pages/BudgetPage";
 import UserDashboard from "./pages/UserDashboard";
 import StoreDashboard from "./pages/StoreDashboard";
 import HealthyMeals from "./pages/HealthyMeals";
+import StoreDetail from "./pages/StoreDetail";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import NotFound from "./pages/NotFound";
@@ -30,6 +31,7 @@ const App = () => (
               <Route path="/" element={<HomePage />} />
               <Route path="/compare" element={<ComparePage />} />
               <Route path="/stores" element={<StoresPage />} />
+              <Route path="/store/:slug" element={<StoreDetail />} />
               <Route path="/budget" element={<BudgetPage />} />
               <Route path="/dashboard" element={<UserDashboard />} />
               <Route path="/store-dashboard" element={<StoreDashboard />} />

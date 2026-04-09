@@ -1,6 +1,7 @@
 import { PublicLayout } from "@/components/PublicLayout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 import { MapPin, Star, Truck, ShoppingBag, Heart, CheckCircle2 } from "lucide-react";
 
 const stores = [
@@ -129,8 +130,10 @@ export default function StoresPage() {
                   )}
                 </div>
 
-                <Button variant={store.highlight ? "default" : "outline"} className="w-full mt-4 rounded-lg" size="sm">
-                  View Store Details
+                <Button variant={store.highlight ? "default" : "outline"} className="w-full mt-4 rounded-lg" size="sm" asChild>
+                  <Link to={`/store/${store.name.toLowerCase().replace(/\s+/g, "-").replace(/'/g, "")}`}>
+                    View Store Details
+                  </Link>
                 </Button>
               </div>
             </div>
