@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Search, MapPin, ArrowUpDown, Heart, ShoppingCart, Loader2 } from "lucide-react";
+import { Search, MapPin, ArrowUpDown, Heart, ShoppingCart, Loader2, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 type Product = {
   id: string;
@@ -28,6 +29,22 @@ export default function ComparePage() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [shoppingList, setShoppingList] = useState<Set<string>>(new Set());
+  const { toast } = useToast();
+
+  const toggleListItem = (product: Product) => {
+    setShoppingList(prev => {
+      const next = new Set(prev);
+      if (next.has(product.id)) {
+        next.delete(product.id);
+        toast({ title: "Removed from list", description: product.name });
+      } else {
+        next.add(product.id);
+        toast({ title: "Added to list", description: `${product.name} — $${product.price.toFixed(2)}` });
+      }
+      return next;
+    });
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -157,9 +174,17 @@ export default function ComparePage() {
                     </Badge>
                   </div>
 
-                  <Button size="sm" variant="outline" className="w-full mt-3 rounded-lg text-xs">
-                    <ShoppingCart className="h-3.5 w-3.5 mr-1.5" />
-                    Add to List
+                  <Button
+                    size="sm"
+                    variant={shoppingList.has(product.id) ? "default" : "outline"}
+                    className="w-full mt-3 rounded-lg text-xs"
+                    onClick={() => toggleListItem(product)}
+                  >
+                    {shoppingList.has(product.id) ? (
+                      <><Check className="h-3.5 w-3.5 mr-1.5" />Added</>
+                    ) : (
+                      <><ShoppingCart className="h-3.5 w-3.5 mr-1.5" />Add to List</>
+                    )}
                   </Button>
                 </div>
               </div>
