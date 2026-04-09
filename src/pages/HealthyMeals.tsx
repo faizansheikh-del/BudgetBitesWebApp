@@ -170,61 +170,41 @@ const meals: Meal[] = [
 
 const categories = ["All", "Breakfast", "Lunch", "Dinner"];
 
-const weeklyPlan = [
-  {
-    day: "Monday",
-    breakfast: { name: "Overnight Oats", emoji: "🥣", cost: 2.75 },
-    lunch: { name: "Black Bean & Rice Bowl", emoji: "🍚", cost: 4.50 },
-    dinner: { name: "Lentil Soup", emoji: "🍲", cost: 4.25 },
-    snack: { name: "Banana", emoji: "🍌", cost: 0.75 },
-  },
-  {
-    day: "Tuesday",
-    breakfast: { name: "Egg & Spinach Wrap", emoji: "🌯", cost: 3.50 },
-    lunch: { name: "Tuna Salad Wraps", emoji: "🥬", cost: 4.75 },
-    dinner: { name: "Veggie Stir Fry", emoji: "🥦", cost: 5.75 },
-    snack: { name: "Apple + PB", emoji: "🍎", cost: 1.25 },
-  },
-  {
-    day: "Wednesday",
-    breakfast: { name: "PB Banana Smoothie", emoji: "🍌", cost: 3.25 },
-    lunch: { name: "Pasta Primavera", emoji: "🍝", cost: 5.25 },
-    dinner: { name: "Lentil Soup", emoji: "🍲", cost: 4.25 },
-    snack: { name: "Yogurt", emoji: "🥣", cost: 1.50 },
-  },
-  {
-    day: "Thursday",
-    breakfast: { name: "Overnight Oats", emoji: "🥣", cost: 2.75 },
-    lunch: { name: "Black Bean & Rice Bowl", emoji: "🍚", cost: 4.50 },
-    dinner: { name: "Chicken Sheet Pan", emoji: "🍗", cost: 6.50 },
-    snack: { name: "Carrots + Hummus", emoji: "🥕", cost: 1.50 },
-  },
-  {
-    day: "Friday",
-    breakfast: { name: "Egg & Spinach Wrap", emoji: "🌯", cost: 3.50 },
-    lunch: { name: "Tuna Salad Wraps", emoji: "🥬", cost: 4.75 },
-    dinner: { name: "Veggie Stir Fry", emoji: "🥦", cost: 5.75 },
-    snack: { name: "Trail Mix", emoji: "🥜", cost: 1.25 },
-  },
-  {
-    day: "Saturday",
-    breakfast: { name: "PB Banana Smoothie", emoji: "🍌", cost: 3.25 },
-    lunch: { name: "Pasta Primavera", emoji: "🍝", cost: 5.25 },
-    dinner: { name: "Chicken Sheet Pan", emoji: "🍗", cost: 6.50 },
-    snack: { name: "Banana", emoji: "🍌", cost: 0.75 },
-  },
-  {
-    day: "Sunday",
-    breakfast: { name: "Overnight Oats", emoji: "🥣", cost: 2.75 },
-    lunch: { name: "Black Bean & Rice Bowl", emoji: "🍚", cost: 4.50 },
-    dinner: { name: "Lentil Soup", emoji: "🍲", cost: 4.25 },
-    snack: { name: "Apple + PB", emoji: "🍎", cost: 1.25 },
-  },
+const snacks = [
+  { name: "Banana", emoji: "🍌", cost: 0.75 },
+  { name: "Apple + PB", emoji: "🍎", cost: 1.25 },
+  { name: "Yogurt", emoji: "🥣", cost: 1.50 },
+  { name: "Carrots + Hummus", emoji: "🥕", cost: 1.50 },
+  { name: "Trail Mix", emoji: "🥜", cost: 1.25 },
+  { name: "Granola Bar", emoji: "🍫", cost: 1.00 },
+  { name: "Mixed Nuts", emoji: "🥜", cost: 1.75 },
 ];
 
-const weeklyTotal = weeklyPlan.reduce(
-  (s, d) => s + d.breakfast.cost + d.lunch.cost + d.dinner.cost + d.snack.cost, 0
-);
+const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+function pickRandom<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function generateWeeklyPlan() {
+  const breakfastMeals = meals.filter((m) => m.category === "Breakfast");
+  const lunchMeals = meals.filter((m) => m.category === "Lunch");
+  const dinnerMeals = meals.filter((m) => m.category === "Dinner");
+
+  return days.map((day) => {
+    const b = pickRandom(breakfastMeals);
+    const l = pickRandom(lunchMeals);
+    const d = pickRandom(dinnerMeals);
+    const s = pickRandom(snacks);
+    return {
+      day,
+      breakfast: { name: b.name, emoji: b.image, cost: b.cost },
+      lunch: { name: l.name, emoji: l.image, cost: l.cost },
+      dinner: { name: d.name, emoji: d.image, cost: d.cost },
+      snack: s,
+    };
+  });
+}
 
 export default function HealthyMeals() {
   const [search, setSearch] = useState("");
