@@ -8,6 +8,10 @@ import {
   ChefHat, Users, Filter, ArrowRight, Sparkles
 } from "lucide-react";
 import { useState } from "react";
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle
+} from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
 
 type Meal = {
   name: string;
