@@ -5,21 +5,20 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { ProtectedRoute } from "@/components/ProtectedRoute";
-import Auth from "./pages/Auth";
-import Index from "./pages/Index";
-import Dashboard from "./pages/Dashboard";
-import BugCreate from "./pages/BugCreate";
-import BugDetail from "./pages/BugDetail";
-import BugList from "./pages/BugList";
-import Analytics from "./pages/Analytics";
-import Settings from "./pages/Settings";
+import HomePage from "./pages/HomePage";
+import ComparePage from "./pages/ComparePage";
+import StoresPage from "./pages/StoresPage";
+import BudgetPage from "./pages/BudgetPage";
+import UserDashboard from "./pages/UserDashboard";
+import StoreDashboard from "./pages/StoreDashboard";
+import SignInPage from "./pages/SignInPage";
+import SignUpPage from "./pages/SignUpPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
 const App = () => (
-  <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+  <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
@@ -27,14 +26,14 @@ const App = () => (
         <BrowserRouter>
           <AuthProvider>
             <Routes>
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/" element={<Index />} />
-              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-              <Route path="/bugs" element={<ProtectedRoute><BugList /></ProtectedRoute>} />
-              <Route path="/bugs/new" element={<ProtectedRoute><BugCreate /></ProtectedRoute>} />
-              <Route path="/bugs/:id" element={<ProtectedRoute><BugDetail /></ProtectedRoute>} />
-              <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
-              <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+              <Route path="/" element={<HomePage />} />
+              <Route path="/compare" element={<ComparePage />} />
+              <Route path="/stores" element={<StoresPage />} />
+              <Route path="/budget" element={<BudgetPage />} />
+              <Route path="/dashboard" element={<UserDashboard />} />
+              <Route path="/store-dashboard" element={<StoreDashboard />} />
+              <Route path="/signin" element={<SignInPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AuthProvider>
