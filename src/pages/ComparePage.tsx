@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Search, MapPin, ArrowUpDown, Heart, ShoppingCart, Loader2 } from "lucide-react";
+import { Search, MapPin, ArrowUpDown, Heart, ShoppingCart, Loader2, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 type Product = {
   id: string;
