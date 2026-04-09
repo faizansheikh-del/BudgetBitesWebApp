@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Search, MapPin, ArrowUpDown, Heart, ShoppingCart, Loader2, Check, X, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useShoppingList } from "@/contexts/ShoppingListContext";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 type Product = {
@@ -30,22 +30,15 @@ export default function ComparePage() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [shoppingList, setShoppingList] = useState<Set<string>>(new Set());
   const [showListDialog, setShowListDialog] = useState(false);
-  const { toast } = useToast();
+  const { items: listItems, addItem, removeItem, clearList, isInList, totalCost, totalSavings } = useShoppingList();
 
   const toggleListItem = (product: Product) => {
-    setShoppingList(prev => {
-      const next = new Set(prev);
-      if (next.has(product.id)) {
-        next.delete(product.id);
-        toast({ title: "Removed from list", description: product.name });
-      } else {
-        next.add(product.id);
-        toast({ title: "Added to list", description: `${product.name} — $${product.price.toFixed(2)}` });
-      }
-      return next;
-    });
+    if (isInList(product.id)) {
+      removeItem(product.id);
+    } else {
+      addItem(product);
+    }
   };
 
   useEffect(() => {
@@ -178,11 +171,11 @@ export default function ComparePage() {
 
                   <Button
                     size="sm"
-                    variant={shoppingList.has(product.id) ? "default" : "outline"}
+                    variant={isInList(product.id) ? "default" : "outline"}
                     className="w-full mt-3 rounded-lg text-xs"
                     onClick={() => toggleListItem(product)}
                   >
-                    {shoppingList.has(product.id) ? (
+                    {isInList(product.id) ? (
                       <><Check className="h-3.5 w-3.5 mr-1.5" />Added</>
                     ) : (
                       <><ShoppingCart className="h-3.5 w-3.5 mr-1.5" />Add to List</>
@@ -193,12 +186,11 @@ export default function ComparePage() {
             ))}
           </div>
         )}
-        {/* Bottom spacer when bar is visible */}
-        {shoppingList.size > 0 && <div className="h-20" />}
+        {listItems.length > 0 && <div className="h-20" />}
       </div>
 
       {/* Floating Shopping List Summary Bar */}
-      {shoppingList.size > 0 && (
+      {listItems.length > 0 && (
         <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background/95 backdrop-blur-md shadow-lg">
           <div className="container px-4 md:px-6 py-3 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
@@ -207,26 +199,17 @@ export default function ComparePage() {
               </div>
               <div>
                 <p className="text-sm font-semibold text-foreground">
-                  {shoppingList.size} item{shoppingList.size !== 1 ? "s" : ""} in list
+                  {listItems.length} item{listItems.length !== 1 ? "s" : ""} in list
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  Est. total: <span className="font-medium text-primary">
-                    ${products.filter(p => shoppingList.has(p.id)).reduce((sum, p) => sum + p.price, 0).toFixed(2)}
-                  </span>
+                  Est. total: <span className="font-medium text-primary">${totalCost.toFixed(2)}</span>
                   {" · "}
-                  You save: <span className="font-medium text-green-500">
-                    ${products.filter(p => shoppingList.has(p.id)).reduce((sum, p) => sum + (p.original_price - p.price), 0).toFixed(2)}
-                  </span>
+                  You save: <span className="font-medium text-green-500">${totalSavings.toFixed(2)}</span>
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <Button
-                size="sm"
-                variant="ghost"
-                className="text-xs text-muted-foreground"
-                onClick={() => { setShoppingList(new Set()); toast({ title: "List cleared" }); }}
-              >
+              <Button size="sm" variant="ghost" className="text-xs text-muted-foreground" onClick={clearList}>
                 Clear
               </Button>
               <Button size="sm" className="text-xs" onClick={() => setShowListDialog(true)}>
@@ -244,34 +227,36 @@ export default function ComparePage() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <ShoppingCart className="h-5 w-5 text-primary" />
-              Shopping List ({shoppingList.size} item{shoppingList.size !== 1 ? "s" : ""})
+              Shopping List ({listItems.length} item{listItems.length !== 1 ? "s" : ""})
             </DialogTitle>
           </DialogHeader>
-          {shoppingList.size === 0 ? (
+          {listItems.length === 0 ? (
             <p className="text-sm text-muted-foreground text-center py-6">Your shopping list is empty.</p>
           ) : (
             <div className="space-y-4">
               <ul className="space-y-2">
-                {products.filter(p => shoppingList.has(p.id)).map((product) => (
-                  <li key={product.id} className="flex items-center gap-3 bg-muted/50 rounded-lg p-2.5">
-                    {product.image_url ? (
-                      <img src={product.image_url} alt={product.name} className="h-12 w-12 rounded-md object-cover shrink-0" />
+                {listItems.map((item) => (
+                  <li key={item.id} className="flex items-center gap-3 bg-muted/50 rounded-lg p-2.5">
+                    {item.image_url ? (
+                      <img src={item.image_url} alt={item.name} className="h-12 w-12 rounded-md object-cover shrink-0" />
                     ) : (
-                      <span className="text-2xl shrink-0">{product.image}</span>
+                      <span className="text-2xl shrink-0">{item.image}</span>
                     )}
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-foreground truncate">{product.name}</p>
-                      <p className="text-xs text-muted-foreground">{product.store} · {product.brand}</p>
+                      <p className="text-sm font-medium text-foreground truncate">{item.name}</p>
+                      <p className="text-xs text-muted-foreground">{item.store}{item.brand ? ` · ${item.brand}` : ""}</p>
                     </div>
                     <div className="text-right shrink-0">
-                      <p className="text-sm font-bold text-primary">${product.price.toFixed(2)}</p>
-                      <p className="text-[10px] line-through text-muted-foreground">${product.original_price.toFixed(2)}</p>
+                      <p className="text-sm font-bold text-primary">${item.price.toFixed(2)}</p>
+                      {item.original_price > item.price && (
+                        <p className="text-[10px] line-through text-muted-foreground">${item.original_price.toFixed(2)}</p>
+                      )}
                     </div>
                     <Button
                       variant="ghost"
                       size="icon"
                       className="h-7 w-7 shrink-0 text-muted-foreground hover:text-destructive"
-                      onClick={() => toggleListItem(product)}
+                      onClick={() => removeItem(item.id)}
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </Button>
@@ -281,22 +266,18 @@ export default function ComparePage() {
               <div className="border-t border-border pt-3 space-y-1">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Subtotal</span>
-                  <span className="font-semibold text-foreground">
-                    ${products.filter(p => shoppingList.has(p.id)).reduce((s, p) => s + p.price, 0).toFixed(2)}
-                  </span>
+                  <span className="font-semibold text-foreground">${totalCost.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Total savings</span>
-                  <span className="font-semibold text-green-500">
-                    -${products.filter(p => shoppingList.has(p.id)).reduce((s, p) => s + (p.original_price - p.price), 0).toFixed(2)}
-                  </span>
+                  <span className="font-semibold text-green-500">-${totalSavings.toFixed(2)}</span>
                 </div>
               </div>
               <Button
                 variant="outline"
                 size="sm"
                 className="w-full text-xs"
-                onClick={() => { setShoppingList(new Set()); setShowListDialog(false); toast({ title: "List cleared" }); }}
+                onClick={() => { clearList(); setShowListDialog(false); }}
               >
                 Clear All
               </Button>

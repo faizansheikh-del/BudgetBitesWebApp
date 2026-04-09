@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { ShoppingListProvider } from "@/contexts/ShoppingListContext";
 import HomePage from "./pages/HomePage";
 import ComparePage from "./pages/ComparePage";
 import StoresPage from "./pages/StoresPage";
@@ -27,6 +28,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <AuthProvider>
+          <ShoppingListProvider>
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/compare" element={<ComparePage />} />
@@ -40,6 +42,7 @@ const App = () => (
               <Route path="/signup" element={<SignUpPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
+          </ShoppingListProvider>
           </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>

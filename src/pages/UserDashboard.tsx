@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { PublicLayout } from "@/components/PublicLayout";
+import { useShoppingList } from "@/contexts/ShoppingListContext";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -14,14 +15,6 @@ import {
 
 const recentSearches = ["Organic Eggs", "Whole Milk", "Chicken Breast", "Avocado"];
 
-const initialList = [
-  { name: "Eggs (12pk)", qty: 1, price: 3.49 },
-  { name: "Whole Wheat Bread", qty: 2, price: 1.89 },
-  { name: "Chicken Breast 1lb", qty: 1, price: 3.29 },
-  { name: "Organic Milk", qty: 1, price: 4.29 },
-  { name: "Baby Spinach", qty: 1, price: 2.99 },
-];
-
 const alternatives = [
   { current: "Horizon Milk ($5.79)", alt: "Store Brand Milk ($3.49)", save: "$2.30" },
   { current: "Dave's Bread ($3.99)", alt: "Aldi Bread ($1.89)", save: "$2.10" },
@@ -35,20 +28,20 @@ const notifications = [
 ];
 
 export default function UserDashboard() {
-  const [savedList, setSavedList] = useState(initialList);
+  const { items: savedList, removeItem, addManualItem, totalCost } = useShoppingList();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [newName, setNewName] = useState("");
   const [newQty, setNewQty] = useState("1");
   const [newPrice, setNewPrice] = useState("");
 
-  const totalList = savedList.reduce((sum, i) => sum + i.price * i.qty, 0);
+  const totalList = totalCost;
 
   const handleAddItem = () => {
     const name = newName.trim();
     const qty = parseInt(newQty) || 1;
     const price = parseFloat(newPrice);
     if (!name || isNaN(price) || price <= 0) return;
-    setSavedList((prev) => [...prev, { name, qty, price }]);
+    addManualItem(name, qty, price);
     setNewName("");
     setNewQty("1");
     setNewPrice("");
@@ -56,7 +49,8 @@ export default function UserDashboard() {
   };
 
   const handleRemoveItem = (index: number) => {
-    setSavedList((prev) => prev.filter((_, i) => i !== index));
+    const item = savedList[index];
+    if (item) removeItem(item.id);
   };
 
   return (
