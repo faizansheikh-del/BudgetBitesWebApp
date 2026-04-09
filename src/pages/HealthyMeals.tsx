@@ -213,6 +213,7 @@ export default function HealthyMeals() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [weeklyPlan, setWeeklyPlan] = useState(() => generateWeeklyPlan());
   const [shoppingList, setShoppingList] = useState<string[]>([]);
+  const [showShoppingList, setShowShoppingList] = useState(false);
   const { toast } = useToast();
 
   const weeklyTotal = weeklyPlan.reduce(
@@ -565,10 +566,12 @@ export default function HealthyMeals() {
                       className="mt-3 w-full"
                       onClick={() => {
                         const missing = selectedMeal.ingredients.filter(item => !checkedIngredients.has(item));
-                        toast({
-                          title: `${missing.length} item${missing.length > 1 ? "s" : ""} added to shopping list`,
-                          description: missing.slice(0, 3).join(", ") + (missing.length > 3 ? ` +${missing.length - 3} more` : ""),
+                        setShoppingList(prev => {
+                          const combined = new Set([...prev, ...missing]);
+                          return Array.from(combined);
                         });
+                        setSelectedMeal(null);
+                        setShowShoppingList(true);
                       }}
                     >
                       <ShoppingCart className="h-4 w-4 mr-1.5" />
@@ -612,6 +615,46 @@ export default function HealthyMeals() {
                 </div>
               </div>
             </>
+          )}
+        </DialogContent>
+      </Dialog>
+      {/* Shopping List Dialog */}
+      <Dialog open={showShoppingList} onOpenChange={setShowShoppingList}>
+        <DialogContent className="sm:max-w-md max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <ShoppingCart className="h-5 w-5 text-primary" />
+              Shopping List ({shoppingList.length} item{shoppingList.length !== 1 ? "s" : ""})
+            </DialogTitle>
+          </DialogHeader>
+          {shoppingList.length === 0 ? (
+            <p className="text-sm text-muted-foreground text-center py-6">Your shopping list is empty. Add missing ingredients from a recipe!</p>
+          ) : (
+            <div className="space-y-4">
+              <ul className="space-y-2">
+                {shoppingList.map((item, i) => (
+                  <li key={i} className="flex items-center justify-between gap-2 text-sm text-foreground bg-muted/50 rounded-lg px-3 py-2">
+                    <span>{item}</span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-6 w-6 p-0 text-muted-foreground hover:text-destructive"
+                      onClick={() => setShoppingList(prev => prev.filter((_, idx) => idx !== i))}
+                    >
+                      ✕
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" className="flex-1" onClick={() => { setShoppingList([]); setShowShoppingList(false); }}>
+                  Clear All
+                </Button>
+                <Button size="sm" className="flex-1" asChild>
+                  <Link to="/compare">Find Best Prices</Link>
+                </Button>
+              </div>
+            </div>
           )}
         </DialogContent>
       </Dialog>
