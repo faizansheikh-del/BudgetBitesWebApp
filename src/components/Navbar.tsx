@@ -10,6 +10,7 @@ const navLinks = [
   { label: "Compare Prices", path: "/compare" },
   { label: "Stores", path: "/stores" },
   { label: "Budget Tracker", path: "/budget" },
+  { label: "Healthy Meals", path: "/healthy-meals" },
   { label: "Dashboard", path: "/dashboard" },
 ];
 
