@@ -34,7 +34,7 @@ export default function ComparePage() {
       setLoading(true);
       const { data, error } = await supabase
         .from("products")
-        .select("id, name, brand, store, price, original_price, distance, category, image, tags, healthy")
+        .select("id, name, brand, store, price, original_price, distance, category, image, image_url, tags, healthy")
         .order("price", { ascending: true });
 
       if (!error && data) {
