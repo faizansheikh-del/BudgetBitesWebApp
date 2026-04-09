@@ -5,9 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import {
   Search, Clock, DollarSign, Heart, Flame, Leaf, Star,
-  ChefHat, Users, Filter, ArrowRight, Sparkles
+  ChefHat, Users, Filter, ArrowRight, Sparkles, RefreshCw
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle
 } from "@/components/ui/dialog";
@@ -169,68 +169,58 @@ const meals: Meal[] = [
 
 const categories = ["All", "Breakfast", "Lunch", "Dinner"];
 
-const weeklyPlan = [
-  {
-    day: "Monday",
-    breakfast: { name: "Overnight Oats", emoji: "🥣", cost: 2.75 },
-    lunch: { name: "Black Bean & Rice Bowl", emoji: "🍚", cost: 4.50 },
-    dinner: { name: "Lentil Soup", emoji: "🍲", cost: 4.25 },
-    snack: { name: "Banana", emoji: "🍌", cost: 0.75 },
-  },
-  {
-    day: "Tuesday",
-    breakfast: { name: "Egg & Spinach Wrap", emoji: "🌯", cost: 3.50 },
-    lunch: { name: "Tuna Salad Wraps", emoji: "🥬", cost: 4.75 },
-    dinner: { name: "Veggie Stir Fry", emoji: "🥦", cost: 5.75 },
-    snack: { name: "Apple + PB", emoji: "🍎", cost: 1.25 },
-  },
-  {
-    day: "Wednesday",
-    breakfast: { name: "PB Banana Smoothie", emoji: "🍌", cost: 3.25 },
-    lunch: { name: "Pasta Primavera", emoji: "🍝", cost: 5.25 },
-    dinner: { name: "Lentil Soup", emoji: "🍲", cost: 4.25 },
-    snack: { name: "Yogurt", emoji: "🥣", cost: 1.50 },
-  },
-  {
-    day: "Thursday",
-    breakfast: { name: "Overnight Oats", emoji: "🥣", cost: 2.75 },
-    lunch: { name: "Black Bean & Rice Bowl", emoji: "🍚", cost: 4.50 },
-    dinner: { name: "Chicken Sheet Pan", emoji: "🍗", cost: 6.50 },
-    snack: { name: "Carrots + Hummus", emoji: "🥕", cost: 1.50 },
-  },
-  {
-    day: "Friday",
-    breakfast: { name: "Egg & Spinach Wrap", emoji: "🌯", cost: 3.50 },
-    lunch: { name: "Tuna Salad Wraps", emoji: "🥬", cost: 4.75 },
-    dinner: { name: "Veggie Stir Fry", emoji: "🥦", cost: 5.75 },
-    snack: { name: "Trail Mix", emoji: "🥜", cost: 1.25 },
-  },
-  {
-    day: "Saturday",
-    breakfast: { name: "PB Banana Smoothie", emoji: "🍌", cost: 3.25 },
-    lunch: { name: "Pasta Primavera", emoji: "🍝", cost: 5.25 },
-    dinner: { name: "Chicken Sheet Pan", emoji: "🍗", cost: 6.50 },
-    snack: { name: "Banana", emoji: "🍌", cost: 0.75 },
-  },
-  {
-    day: "Sunday",
-    breakfast: { name: "Overnight Oats", emoji: "🥣", cost: 2.75 },
-    lunch: { name: "Black Bean & Rice Bowl", emoji: "🍚", cost: 4.50 },
-    dinner: { name: "Lentil Soup", emoji: "🍲", cost: 4.25 },
-    snack: { name: "Apple + PB", emoji: "🍎", cost: 1.25 },
-  },
+const snacks = [
+  { name: "Banana", emoji: "🍌", cost: 0.75 },
+  { name: "Apple + PB", emoji: "🍎", cost: 1.25 },
+  { name: "Yogurt", emoji: "🥣", cost: 1.50 },
+  { name: "Carrots + Hummus", emoji: "🥕", cost: 1.50 },
+  { name: "Trail Mix", emoji: "🥜", cost: 1.25 },
+  { name: "Granola Bar", emoji: "🍫", cost: 1.00 },
+  { name: "Mixed Nuts", emoji: "🥜", cost: 1.75 },
 ];
 
-const weeklyTotal = weeklyPlan.reduce(
-  (s, d) => s + d.breakfast.cost + d.lunch.cost + d.dinner.cost + d.snack.cost, 0
-);
+const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+function pickRandom<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function generateWeeklyPlan() {
+  const breakfastMeals = meals.filter((m) => m.category === "Breakfast");
+  const lunchMeals = meals.filter((m) => m.category === "Lunch");
+  const dinnerMeals = meals.filter((m) => m.category === "Dinner");
+
+  return days.map((day) => {
+    const b = pickRandom(breakfastMeals);
+    const l = pickRandom(lunchMeals);
+    const d = pickRandom(dinnerMeals);
+    const s = pickRandom(snacks);
+    return {
+      day,
+      breakfast: { name: b.name, emoji: b.image, cost: b.cost },
+      lunch: { name: l.name, emoji: l.image, cost: l.cost },
+      dinner: { name: d.name, emoji: d.image, cost: d.cost },
+      snack: s,
+    };
+  });
+}
 
 export default function HealthyMeals() {
   const [search, setSearch] = useState("");
-  const [activeCategory, setActiveCategory] = useState("All");
   const [selectedMeal, setSelectedMeal] = useState<Meal | null>(null);
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [weeklyPlan, setWeeklyPlan] = useState(() => generateWeeklyPlan());
   const [shoppingList, setShoppingList] = useState<string[]>([]);
   const { toast } = useToast();
+
+  const weeklyTotal = weeklyPlan.reduce(
+    (s, d) => s + d.breakfast.cost + d.lunch.cost + d.dinner.cost + d.snack.cost, 0
+  );
+
+  const handleNewPlan = useCallback(() => {
+    setWeeklyPlan(generateWeeklyPlan());
+    toast({ title: "New meal plan generated!", description: "Your weekly plan has been refreshed with new meals." });
+  }, [toast]);
 
   const filtered = meals.filter((m) => {
     const matchSearch = m.name.toLowerCase().includes(search.toLowerCase());
@@ -380,16 +370,21 @@ export default function HealthyMeals() {
 
         {/* Weekly Meal Plan */}
         <div className="bg-card border border-border rounded-xl p-6 md:p-8 mb-12">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-              <Sparkles className="h-5 w-5 text-primary" />
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                <Sparkles className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-foreground">Sample Weekly Meal Plan</h2>
+                <p className="text-sm text-muted-foreground">
+                  Eat healthy all week for just ${weeklyTotal.toFixed(2)}
+                </p>
+              </div>
             </div>
-            <div>
-              <h2 className="text-xl font-bold text-foreground">Sample Weekly Meal Plan</h2>
-              <p className="text-sm text-muted-foreground">
-                Eat healthy all week for just ${weeklyTotal.toFixed(2)}
-              </p>
-            </div>
+            <Button variant="outline" size="sm" onClick={handleNewPlan}>
+              <RefreshCw className="h-4 w-4 mr-1" /> New Plan
+            </Button>
           </div>
           {/* Table Header */}
           <div className="hidden md:grid grid-cols-[100px_1fr_1fr_1fr_1fr_80px] gap-2 px-4 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
