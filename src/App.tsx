@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { ShoppingListProvider } from "@/contexts/ShoppingListContext";
 import HomePage from "./pages/HomePage";
 import ComparePage from "./pages/ComparePage";
 import StoresPage from "./pages/StoresPage";
