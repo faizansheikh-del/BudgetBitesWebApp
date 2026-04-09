@@ -41,7 +41,7 @@ export default function UserDashboard() {
     const qty = parseInt(newQty) || 1;
     const price = parseFloat(newPrice);
     if (!name || isNaN(price) || price <= 0) return;
-    setSavedList((prev) => [...prev, { name, qty, price }]);
+    addManualItem(name, qty, price);
     setNewName("");
     setNewQty("1");
     setNewPrice("");
@@ -49,7 +49,8 @@ export default function UserDashboard() {
   };
 
   const handleRemoveItem = (index: number) => {
-    setSavedList((prev) => prev.filter((_, i) => i !== index));
+    const item = savedList[index];
+    if (item) removeItem(item.id);
   };
 
   return (
