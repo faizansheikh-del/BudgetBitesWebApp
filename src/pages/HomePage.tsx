@@ -39,15 +39,15 @@ export default function HomePage() {
         </div>
         <div className="container px-4 md:px-6 py-20 md:py-32 relative">
           <div className="max-w-3xl mx-auto text-center space-y-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm text-primary font-medium">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-1.5 text-sm text-white font-medium">
               <Zap className="h-3.5 w-3.5" />
               Smart Grocery Shopping
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground text-balance">
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white text-balance">
               Save More on Groceries,{" "}
               <span className="text-primary">Eat Better</span>
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-balance">
+            <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto text-balance">
               Compare grocery prices across nearby stores, discover cheaper and healthier alternatives, and stay within your budget — all in one place.
             </p>
 
