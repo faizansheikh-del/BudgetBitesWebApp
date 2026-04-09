@@ -28,6 +28,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <AuthProvider>
+          <ShoppingListProvider>
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/compare" element={<ComparePage />} />
@@ -41,6 +42,7 @@ const App = () => (
               <Route path="/signup" element={<SignUpPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
+          </ShoppingListProvider>
           </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>
