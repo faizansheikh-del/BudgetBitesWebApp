@@ -17,6 +17,7 @@ type Product = {
   distance: string;
   category: string;
   image: string;
+  image_url: string;
   tags: string[];
   healthy: boolean;
 };
