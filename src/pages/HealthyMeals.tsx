@@ -48,7 +48,7 @@ const meals: Meal[] = [
   {
     name: "Veggie Stir Fry",
     image: "🥦",
-    cost: 3.20,
+    cost: 5.75,
     servings: 3,
     time: "20 min",
     calories: 290,
@@ -63,7 +63,7 @@ const meals: Meal[] = [
   {
     name: "Overnight Oats",
     image: "🥣",
-    cost: 1.10,
+    cost: 2.75,
     servings: 1,
     time: "5 min prep",
     calories: 340,
@@ -78,7 +78,7 @@ const meals: Meal[] = [
   {
     name: "Lentil Soup",
     image: "🍲",
-    cost: 1.85,
+    cost: 4.25,
     servings: 6,
     time: "35 min",
     calories: 260,
@@ -93,7 +93,7 @@ const meals: Meal[] = [
   {
     name: "Egg & Spinach Wrap",
     image: "🌯",
-    cost: 1.50,
+    cost: 3.50,
     servings: 1,
     time: "10 min",
     calories: 310,
@@ -108,7 +108,7 @@ const meals: Meal[] = [
   {
     name: "Chicken & Veggie Sheet Pan",
     image: "🍗",
-    cost: 3.75,
+    cost: 6.50,
     servings: 4,
     time: "40 min",
     calories: 420,
@@ -123,7 +123,7 @@ const meals: Meal[] = [
   {
     name: "Banana Peanut Butter Smoothie",
     image: "🍌",
-    cost: 1.25,
+    cost: 3.25,
     servings: 1,
     time: "5 min",
     calories: 350,
@@ -138,7 +138,7 @@ const meals: Meal[] = [
   {
     name: "Pasta Primavera",
     image: "🍝",
-    cost: 2.80,
+    cost: 5.25,
     servings: 4,
     time: "25 min",
     calories: 360,
@@ -153,7 +153,7 @@ const meals: Meal[] = [
   {
     name: "Tuna Salad Lettuce Wraps",
     image: "🥬",
-    cost: 2.40,
+    cost: 4.75,
     servings: 2,
     time: "10 min",
     calories: 220,
