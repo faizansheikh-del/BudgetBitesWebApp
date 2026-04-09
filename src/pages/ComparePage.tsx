@@ -79,8 +79,14 @@ export default function ComparePage() {
 
         {/* Category pills */}
         <div className="flex flex-wrap gap-2 mb-6">
-          {["All", "Produce", "Dairy & Eggs", "Meat", "Bakery", "Pantry", "Grains"].map((cat) => (
-            <Button key={cat} variant={cat === "All" ? "default" : "outline"} size="sm" className="rounded-full text-xs">
+          {categories.map((cat) => (
+            <Button
+              key={cat}
+              variant={cat === activeCategory ? "default" : "outline"}
+              size="sm"
+              className="rounded-full text-xs"
+              onClick={() => setActiveCategory(cat)}
+            >
               {cat}
             </Button>
           ))}
