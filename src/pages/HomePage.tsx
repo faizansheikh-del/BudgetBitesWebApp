@@ -74,17 +74,6 @@ export default function HomePage() {
               </Button>
             </div>
           </div>
-          {/* Video */}
-          <div className="max-w-4xl mx-auto mt-12 rounded-2xl overflow-hidden shadow-2xl border border-border">
-            <video
-              src={shoppingVideo.url}
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-auto object-cover"
-            />
-          </div>
         </div>
       </section>
 
