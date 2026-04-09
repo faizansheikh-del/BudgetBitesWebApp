@@ -174,9 +174,17 @@ export default function ComparePage() {
                     </Badge>
                   </div>
 
-                  <Button size="sm" variant="outline" className="w-full mt-3 rounded-lg text-xs">
-                    <ShoppingCart className="h-3.5 w-3.5 mr-1.5" />
-                    Add to List
+                  <Button
+                    size="sm"
+                    variant={shoppingList.has(product.id) ? "default" : "outline"}
+                    className="w-full mt-3 rounded-lg text-xs"
+                    onClick={() => toggleListItem(product)}
+                  >
+                    {shoppingList.has(product.id) ? (
+                      <><Check className="h-3.5 w-3.5 mr-1.5" />Added</>
+                    ) : (
+                      <><ShoppingCart className="h-3.5 w-3.5 mr-1.5" />Add to List</>
+                    )}
                   </Button>
                 </div>
               </div>
