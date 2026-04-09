@@ -6,6 +6,7 @@ import {
   Search, MapPin, TrendingDown, ShieldCheck, Clock, Heart,
   ArrowRight, Star, Zap, DollarSign, ShoppingCart, BarChart3, Leaf, Store
 } from "lucide-react";
+import shoppingVideo from "@/assets/happy-shopping.mp4.asset.json";
 
 const deals = [
   { name: "Organic Eggs (12pk)", store: "Trader Joe's", price: "$3.49", originalPrice: "$4.99", discount: "30%", distance: "0.8 mi" },
@@ -72,6 +73,17 @@ export default function HomePage() {
                 <Link to="/signup">Start Saving</Link>
               </Button>
             </div>
+          </div>
+          {/* Video */}
+          <div className="max-w-4xl mx-auto mt-12 rounded-2xl overflow-hidden shadow-2xl border border-border">
+            <video
+              src={shoppingVideo.url}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-auto object-cover"
+            />
           </div>
         </div>
       </section>
