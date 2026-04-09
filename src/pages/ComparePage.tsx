@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Search, MapPin, ArrowUpDown, Heart, ShoppingCart, Loader2, Check } from "lucide-react";
+import { Search, MapPin, ArrowUpDown, Heart, ShoppingCart, Loader2, Check, X, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 type Product = {
   id: string;
@@ -30,6 +31,7 @@ export default function ComparePage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [shoppingList, setShoppingList] = useState<Set<string>>(new Set());
+  const [showListDialog, setShowListDialog] = useState(false);
   const { toast } = useToast();
 
   const toggleListItem = (product: Product) => {
@@ -227,7 +229,7 @@ export default function ComparePage() {
               >
                 Clear
               </Button>
-              <Button size="sm" className="text-xs">
+              <Button size="sm" className="text-xs" onClick={() => setShowListDialog(true)}>
                 <ShoppingCart className="h-3.5 w-3.5 mr-1.5" />
                 View List
               </Button>
@@ -235,6 +237,73 @@ export default function ComparePage() {
           </div>
         </div>
       )}
+
+      {/* Shopping List Dialog */}
+      <Dialog open={showListDialog} onOpenChange={setShowListDialog}>
+        <DialogContent className="sm:max-w-md max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <ShoppingCart className="h-5 w-5 text-primary" />
+              Shopping List ({shoppingList.size} item{shoppingList.size !== 1 ? "s" : ""})
+            </DialogTitle>
+          </DialogHeader>
+          {shoppingList.size === 0 ? (
+            <p className="text-sm text-muted-foreground text-center py-6">Your shopping list is empty.</p>
+          ) : (
+            <div className="space-y-4">
+              <ul className="space-y-2">
+                {products.filter(p => shoppingList.has(p.id)).map((product) => (
+                  <li key={product.id} className="flex items-center gap-3 bg-muted/50 rounded-lg p-2.5">
+                    {product.image_url ? (
+                      <img src={product.image_url} alt={product.name} className="h-12 w-12 rounded-md object-cover shrink-0" />
+                    ) : (
+                      <span className="text-2xl shrink-0">{product.image}</span>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-foreground truncate">{product.name}</p>
+                      <p className="text-xs text-muted-foreground">{product.store} · {product.brand}</p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <p className="text-sm font-bold text-primary">${product.price.toFixed(2)}</p>
+                      <p className="text-[10px] line-through text-muted-foreground">${product.original_price.toFixed(2)}</p>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7 shrink-0 text-muted-foreground hover:text-destructive"
+                      onClick={() => toggleListItem(product)}
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+              <div className="border-t border-border pt-3 space-y-1">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Subtotal</span>
+                  <span className="font-semibold text-foreground">
+                    ${products.filter(p => shoppingList.has(p.id)).reduce((s, p) => s + p.price, 0).toFixed(2)}
+                  </span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Total savings</span>
+                  <span className="font-semibold text-green-500">
+                    -${products.filter(p => shoppingList.has(p.id)).reduce((s, p) => s + (p.original_price - p.price), 0).toFixed(2)}
+                  </span>
+                </div>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full text-xs"
+                onClick={() => { setShoppingList(new Set()); setShowListDialog(false); toast({ title: "List cleared" }); }}
+              >
+                Clear All
+              </Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </PublicLayout>
   );
 }
