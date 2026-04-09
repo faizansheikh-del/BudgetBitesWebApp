@@ -7,7 +7,8 @@ import {
   Search, Clock, DollarSign, Heart, Flame, Leaf, Star,
   ChefHat, Users, Filter, ArrowRight, Sparkles
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { RefreshCw } from "lucide-react";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle
 } from "@/components/ui/dialog";
