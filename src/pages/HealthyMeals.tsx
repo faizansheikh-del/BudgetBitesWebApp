@@ -2,10 +2,11 @@ import { PublicLayout } from "@/components/PublicLayout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Link } from "react-router-dom";
 import {
   Search, Clock, DollarSign, Heart, Flame, Leaf, Star,
-  ChefHat, Users, Filter, ArrowRight, Sparkles, RefreshCw
+  ChefHat, Users, Filter, ArrowRight, Sparkles, RefreshCw, ShoppingCart
 } from "lucide-react";
 import { useState, useCallback } from "react";
 import {
@@ -208,6 +209,7 @@ function generateWeeklyPlan() {
 export default function HealthyMeals() {
   const [search, setSearch] = useState("");
   const [selectedMeal, setSelectedMeal] = useState<Meal | null>(null);
+  const [checkedIngredients, setCheckedIngredients] = useState<Set<string>>(new Set());
   const [activeCategory, setActiveCategory] = useState("All");
   const [weeklyPlan, setWeeklyPlan] = useState(() => generateWeeklyPlan());
   const [shoppingList, setShoppingList] = useState<string[]>([]);
@@ -349,7 +351,7 @@ export default function HealthyMeals() {
                   <Button
                     size="sm"
                     className="flex-1 text-xs"
-                    onClick={() => setSelectedMeal(meal)}
+                    onClick={() => { setCheckedIngredients(new Set()); setSelectedMeal(meal); }}
                   >
                     View Recipe
                   </Button>
@@ -532,14 +534,50 @@ export default function HealthyMeals() {
                 </div>
 
                 <div>
-                  <h3 className="text-sm font-semibold text-foreground mb-2">🧾 Ingredients</h3>
-                  <ul className="space-y-1">
+                  <h3 className="text-sm font-semibold text-foreground mb-2">🧾 Ingredients — check what you already have</h3>
+                  <ul className="space-y-2">
                     {selectedMeal.ingredients.map((item, i) => (
-                      <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
-                        <span className="text-primary mt-0.5">•</span>{item}
+                      <li key={i} className="flex items-start gap-2">
+                        <Checkbox
+                          id={`ing-${i}`}
+                          checked={checkedIngredients.has(item)}
+                          onCheckedChange={(checked) => {
+                            setCheckedIngredients(prev => {
+                              const next = new Set(prev);
+                              if (checked) next.add(item); else next.delete(item);
+                              return next;
+                            });
+                          }}
+                          className="mt-0.5"
+                        />
+                        <label
+                          htmlFor={`ing-${i}`}
+                          className={`text-sm cursor-pointer select-none ${checkedIngredients.has(item) ? "line-through text-muted-foreground/50" : "text-muted-foreground"}`}
+                        >
+                          {item}
+                        </label>
                       </li>
                     ))}
                   </ul>
+                  {selectedMeal.ingredients.filter(item => !checkedIngredients.has(item)).length > 0 && (
+                    <Button
+                      size="sm"
+                      className="mt-3 w-full"
+                      onClick={() => {
+                        const missing = selectedMeal.ingredients.filter(item => !checkedIngredients.has(item));
+                        toast({
+                          title: `${missing.length} item${missing.length > 1 ? "s" : ""} added to shopping list`,
+                          description: missing.slice(0, 3).join(", ") + (missing.length > 3 ? ` +${missing.length - 3} more` : ""),
+                        });
+                      }}
+                    >
+                      <ShoppingCart className="h-4 w-4 mr-1.5" />
+                      Add {selectedMeal.ingredients.filter(item => !checkedIngredients.has(item)).length} missing item{selectedMeal.ingredients.filter(item => !checkedIngredients.has(item)).length !== 1 ? "s" : ""} to list
+                    </Button>
+                  )}
+                  {selectedMeal.ingredients.every(item => checkedIngredients.has(item)) && (
+                    <p className="mt-3 text-sm text-center text-primary font-medium">✅ You have everything!</p>
+                  )}
                 </div>
 
                 <div>
