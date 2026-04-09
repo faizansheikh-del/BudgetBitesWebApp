@@ -25,6 +25,8 @@ type Meal = {
   category: string;
   rating: number;
   description: string;
+  ingredients: string[];
+  instructions: string[];
 };
 
 const meals: Meal[] = [
