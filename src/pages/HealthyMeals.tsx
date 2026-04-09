@@ -25,6 +25,8 @@ type Meal = {
   category: string;
   rating: number;
   description: string;
+  ingredients: string[];
+  instructions: string[];
 };
 
 const meals: Meal[] = [
@@ -40,6 +42,8 @@ const meals: Meal[] = [
     category: "Lunch",
     rating: 4.7,
     description: "A hearty, protein-packed bowl with seasoned black beans, cilantro lime rice, and fresh toppings.",
+    ingredients: ["1 can black beans (drained & rinsed)", "1½ cups long-grain rice", "1 lime (juiced)", "¼ cup fresh cilantro (chopped)", "1 tsp cumin", "½ tsp garlic powder", "Salt & pepper to taste", "Optional: diced avocado, salsa, sour cream"],
+    instructions: ["Cook rice according to package directions. Fluff and stir in lime juice and cilantro.", "In a saucepan, heat black beans with cumin, garlic powder, salt, and pepper over medium heat for 5 minutes.", "Divide cilantro-lime rice into bowls and top with seasoned black beans.", "Add optional toppings like avocado, salsa, or sour cream and serve."],
   },
   {
     name: "Veggie Stir Fry",
@@ -53,6 +57,8 @@ const meals: Meal[] = [
     category: "Dinner",
     rating: 4.5,
     description: "Colorful mixed vegetables tossed in a savory soy-ginger sauce, served over steamed rice.",
+    ingredients: ["2 cups broccoli florets", "1 red bell pepper (sliced)", "1 carrot (julienned)", "1 cup snap peas", "2 tbsp soy sauce", "1 tbsp sesame oil", "1 tsp fresh ginger (grated)", "2 cloves garlic (minced)", "1 tbsp cornstarch + 2 tbsp water", "Cooked rice for serving"],
+    instructions: ["Heat sesame oil in a large skillet or wok over high heat.", "Add garlic and ginger, stir for 30 seconds until fragrant.", "Add broccoli and carrots, stir fry for 3 minutes. Then add bell pepper and snap peas for 2 more minutes.", "Mix soy sauce with cornstarch slurry and pour over vegetables. Toss until sauce thickens.", "Serve immediately over steamed rice."],
   },
   {
     name: "Overnight Oats",
@@ -66,6 +72,8 @@ const meals: Meal[] = [
     category: "Breakfast",
     rating: 4.8,
     description: "Creamy oats soaked overnight with chia seeds, banana, and a drizzle of honey.",
+    ingredients: ["½ cup rolled oats", "½ cup milk (any kind)", "¼ cup Greek yogurt", "1 tbsp chia seeds", "1 tbsp honey or maple syrup", "½ banana (sliced)", "Pinch of cinnamon"],
+    instructions: ["In a jar or container, combine oats, milk, yogurt, chia seeds, and honey. Stir well.", "Top with banana slices and a pinch of cinnamon.", "Cover and refrigerate overnight (or at least 4 hours).", "In the morning, stir and enjoy cold — or microwave for 2 minutes if you prefer it warm."],
   },
   {
     name: "Lentil Soup",
@@ -79,6 +87,8 @@ const meals: Meal[] = [
     category: "Dinner",
     rating: 4.9,
     description: "A warming, spiced red lentil soup packed with carrots, celery, and tomatoes.",
+    ingredients: ["1½ cups red lentils (rinsed)", "1 can diced tomatoes (14 oz)", "2 carrots (diced)", "2 celery stalks (diced)", "1 onion (diced)", "3 cloves garlic (minced)", "1 tsp cumin", "½ tsp turmeric", "4 cups vegetable broth", "1 tbsp olive oil", "Salt, pepper, and lemon juice to taste"],
+    instructions: ["Heat olive oil in a large pot over medium heat. Sauté onion, carrots, and celery for 5 minutes until softened.", "Add garlic, cumin, and turmeric. Stir for 1 minute.", "Add lentils, diced tomatoes, and broth. Bring to a boil, then reduce heat and simmer for 20–25 minutes until lentils are tender.", "Season with salt, pepper, and a squeeze of lemon. Blend partially for a creamier texture if desired."],
   },
   {
     name: "Egg & Spinach Wrap",
@@ -92,6 +102,8 @@ const meals: Meal[] = [
     category: "Breakfast",
     rating: 4.4,
     description: "Scrambled eggs with fresh spinach, feta cheese, and salsa wrapped in a whole wheat tortilla.",
+    ingredients: ["2 large eggs", "1 cup fresh spinach", "2 tbsp crumbled feta cheese", "1 whole wheat tortilla", "2 tbsp salsa", "Salt & pepper to taste", "Cooking spray or 1 tsp butter"],
+    instructions: ["Whisk eggs with salt and pepper in a bowl.", "Heat a non-stick pan over medium heat with cooking spray or butter.", "Add spinach and cook for 1 minute until wilted. Pour in eggs and scramble until just set.", "Warm the tortilla in the microwave for 15 seconds.", "Fill tortilla with scrambled eggs, spinach, feta, and salsa. Fold and serve."],
   },
   {
     name: "Chicken & Veggie Sheet Pan",
@@ -105,6 +117,8 @@ const meals: Meal[] = [
     category: "Dinner",
     rating: 4.6,
     description: "Seasoned chicken thighs roasted with sweet potatoes, broccoli, and bell peppers.",
+    ingredients: ["1.5 lbs chicken thighs (boneless, skinless)", "2 sweet potatoes (cubed)", "2 cups broccoli florets", "1 red bell pepper (chunked)", "2 tbsp olive oil", "1 tsp paprika", "1 tsp garlic powder", "½ tsp onion powder", "Salt & pepper to taste"],
+    instructions: ["Preheat oven to 425°F (220°C). Line a large baking sheet with parchment paper.", "Toss sweet potatoes with 1 tbsp olive oil, salt, and pepper. Spread on the sheet and roast for 10 minutes.", "Season chicken with paprika, garlic powder, onion powder, salt, and pepper.", "Add chicken, broccoli, and bell pepper to the sheet. Drizzle with remaining olive oil.", "Roast for 20–25 minutes until chicken is cooked through (165°F internal) and vegetables are tender."],
   },
   {
     name: "Banana Peanut Butter Smoothie",
@@ -118,6 +132,8 @@ const meals: Meal[] = [
     category: "Breakfast",
     rating: 4.7,
     description: "A creamy, filling smoothie with banana, peanut butter, oats, and milk.",
+    ingredients: ["1 ripe banana (frozen works best)", "2 tbsp peanut butter", "¼ cup rolled oats", "1 cup milk (any kind)", "1 tbsp honey (optional)", "½ tsp cinnamon", "3–4 ice cubes"],
+    instructions: ["Add all ingredients to a blender.", "Blend on high for 60 seconds until smooth and creamy.", "Pour into a glass and enjoy immediately. Add more milk if you prefer a thinner consistency."],
   },
   {
     name: "Pasta Primavera",
@@ -131,6 +147,8 @@ const meals: Meal[] = [
     category: "Lunch",
     rating: 4.3,
     description: "Whole wheat pasta with seasonal vegetables in a light garlic olive oil sauce.",
+    ingredients: ["8 oz whole wheat penne or rotini", "1 zucchini (diced)", "1 yellow squash (diced)", "1 cup cherry tomatoes (halved)", "½ cup frozen peas", "3 cloves garlic (minced)", "2 tbsp olive oil", "¼ cup Parmesan cheese (grated)", "Fresh basil leaves", "Salt, pepper, and red pepper flakes to taste"],
+    instructions: ["Cook pasta according to package directions. Reserve ½ cup pasta water before draining.", "Heat olive oil in a large skillet over medium-high heat. Add zucchini and squash, cook for 4 minutes.", "Add garlic, cherry tomatoes, and peas. Cook 2 more minutes.", "Toss in cooked pasta with a splash of reserved pasta water. Season with salt, pepper, and red pepper flakes.", "Top with Parmesan and fresh basil. Serve warm."],
   },
   {
     name: "Tuna Salad Lettuce Wraps",
@@ -144,6 +162,8 @@ const meals: Meal[] = [
     category: "Lunch",
     rating: 4.5,
     description: "Light tuna salad with Greek yogurt, celery, and lemon served in crisp butter lettuce cups.",
+    ingredients: ["2 cans tuna (drained)", "3 tbsp Greek yogurt", "1 celery stalk (finely diced)", "1 tbsp lemon juice", "1 tsp Dijon mustard", "Salt & pepper to taste", "6–8 butter lettuce leaves", "Optional: diced red onion, capers"],
+    instructions: ["In a bowl, combine tuna, Greek yogurt, celery, lemon juice, and Dijon mustard. Mix well.", "Season with salt and pepper to taste. Add optional red onion or capers if desired.", "Wash and pat dry butter lettuce leaves.", "Spoon tuna mixture into each lettuce cup and serve immediately."],
   },
 ];
 
@@ -485,7 +505,7 @@ export default function HealthyMeals() {
 
       {/* Recipe Detail Dialog */}
       <Dialog open={!!selectedMeal} onOpenChange={(open) => !open && setSelectedMeal(null)}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-y-auto">
           {selectedMeal && (
             <>
               <DialogHeader>
@@ -514,6 +534,29 @@ export default function HealthyMeals() {
                     <p className="text-sm font-bold text-foreground">{selectedMeal.time}</p>
                     <p className="text-[10px] text-muted-foreground">time</p>
                   </div>
+                </div>
+
+                <div>
+                  <h3 className="text-sm font-semibold text-foreground mb-2">🧾 Ingredients</h3>
+                  <ul className="space-y-1">
+                    {selectedMeal.ingredients.map((item, i) => (
+                      <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
+                        <span className="text-primary mt-0.5">•</span>{item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 className="text-sm font-semibold text-foreground mb-2">👩‍🍳 Instructions</h3>
+                  <ol className="space-y-2">
+                    {selectedMeal.instructions.map((step, i) => (
+                      <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
+                        <span className="text-primary font-bold shrink-0">{i + 1}.</span>
+                        <span>{step}</span>
+                      </li>
+                    ))}
+                  </ol>
                 </div>
 
                 <div>
