@@ -351,7 +351,7 @@ export default function HealthyMeals() {
                   <Button
                     size="sm"
                     className="flex-1 text-xs"
-                    onClick={() => setSelectedMeal(meal)}
+                    onClick={() => { setCheckedIngredients(new Set()); setSelectedMeal(meal); }}
                   >
                     View Recipe
                   </Button>
