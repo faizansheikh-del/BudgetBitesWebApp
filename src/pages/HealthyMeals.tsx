@@ -8,6 +8,10 @@ import {
   ChefHat, Users, Filter, ArrowRight, Sparkles
 } from "lucide-react";
 import { useState } from "react";
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle
+} from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
 
 type Meal = {
   name: string;
@@ -160,12 +164,25 @@ const weeklyTotal = weeklyPlan.reduce((s, d) => s + d.cost, 0);
 export default function HealthyMeals() {
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
+  const [selectedMeal, setSelectedMeal] = useState<Meal | null>(null);
+  const [shoppingList, setShoppingList] = useState<string[]>([]);
+  const { toast } = useToast();
 
   const filtered = meals.filter((m) => {
     const matchSearch = m.name.toLowerCase().includes(search.toLowerCase());
     const matchCat = activeCategory === "All" || m.category === activeCategory;
     return matchSearch && matchCat;
   });
+
+  const handleAddToList = (meal: Meal) => {
+    if (shoppingList.includes(meal.name)) {
+      setShoppingList((prev) => prev.filter((n) => n !== meal.name));
+      toast({ title: "Removed from list", description: `${meal.name} removed from your meal list.` });
+    } else {
+      setShoppingList((prev) => [...prev, meal.name]);
+      toast({ title: "Added to list!", description: `${meal.name} added to your meal list.` });
+    }
+  };
 
   return (
     <PublicLayout>
@@ -273,6 +290,25 @@ export default function HealthyMeals() {
                     <p className="text-[10px] text-muted-foreground">time</p>
                   </div>
                 </div>
+
+                <div className="flex gap-2 mt-4">
+                  <Button
+                    size="sm"
+                    className="flex-1 text-xs"
+                    onClick={() => setSelectedMeal(meal)}
+                  >
+                    View Recipe
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant={shoppingList.includes(meal.name) ? "secondary" : "outline"}
+                    className="flex-1 text-xs"
+                    onClick={() => handleAddToList(meal)}
+                  >
+                    <Heart className={`h-3.5 w-3.5 mr-1 ${shoppingList.includes(meal.name) ? "fill-primary text-primary" : ""}`} />
+                    {shoppingList.includes(meal.name) ? "Saved" : "Save Meal"}
+                  </Button>
+                </div>
               </div>
             </div>
           ))}
@@ -375,6 +411,63 @@ export default function HealthyMeals() {
           </div>
         </div>
       </div>
+
+      {/* Recipe Detail Dialog */}
+      <Dialog open={!!selectedMeal} onOpenChange={(open) => !open && setSelectedMeal(null)}>
+        <DialogContent className="sm:max-w-lg">
+          {selectedMeal && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <span className="text-3xl">{selectedMeal.image}</span>
+                  {selectedMeal.name}
+                </DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4 pt-2">
+                <p className="text-sm text-muted-foreground">{selectedMeal.description}</p>
+
+                <div className="grid grid-cols-4 gap-3 text-center bg-muted/50 rounded-lg p-3">
+                  <div>
+                    <p className="text-sm font-bold text-primary">${selectedMeal.cost.toFixed(2)}</p>
+                    <p className="text-[10px] text-muted-foreground">/serving</p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-foreground">{selectedMeal.calories}</p>
+                    <p className="text-[10px] text-muted-foreground">kcal</p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-foreground">{selectedMeal.protein}</p>
+                    <p className="text-[10px] text-muted-foreground">protein</p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-foreground">{selectedMeal.time}</p>
+                    <p className="text-[10px] text-muted-foreground">time</p>
+                  </div>
+                </div>
+
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">Serves {selectedMeal.servings} · {selectedMeal.category}</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {selectedMeal.tags.map((tag) => (
+                      <Badge key={tag} variant="secondary" className="text-[10px] px-2 py-0.5">{tag}</Badge>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex gap-2 pt-2">
+                  <Button className="flex-1" onClick={() => handleAddToList(selectedMeal)}>
+                    <Heart className={`h-4 w-4 mr-1 ${shoppingList.includes(selectedMeal.name) ? "fill-primary-foreground" : ""}`} />
+                    {shoppingList.includes(selectedMeal.name) ? "Saved" : "Save Meal"}
+                  </Button>
+                  <Button variant="outline" className="flex-1" asChild>
+                    <Link to="/compare">Find Ingredients</Link>
+                  </Button>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </PublicLayout>
   );
 }
