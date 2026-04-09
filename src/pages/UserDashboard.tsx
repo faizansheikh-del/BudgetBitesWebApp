@@ -28,13 +28,13 @@ const notifications = [
 ];
 
 export default function UserDashboard() {
-  const [savedList, setSavedList] = useState(initialList);
+  const { items: savedList, removeItem, addManualItem, totalCost } = useShoppingList();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [newName, setNewName] = useState("");
   const [newQty, setNewQty] = useState("1");
   const [newPrice, setNewPrice] = useState("");
 
-  const totalList = savedList.reduce((sum, i) => sum + i.price * i.qty, 0);
+  const totalList = totalCost;
 
   const handleAddItem = () => {
     const name = newName.trim();
