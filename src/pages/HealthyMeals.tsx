@@ -2,10 +2,11 @@ import { PublicLayout } from "@/components/PublicLayout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Link } from "react-router-dom";
 import {
   Search, Clock, DollarSign, Heart, Flame, Leaf, Star,
-  ChefHat, Users, Filter, ArrowRight, Sparkles, RefreshCw
+  ChefHat, Users, Filter, ArrowRight, Sparkles, RefreshCw, ShoppingCart
 } from "lucide-react";
 import { useState, useCallback } from "react";
 import {
