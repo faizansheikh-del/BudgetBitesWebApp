@@ -6,7 +6,7 @@ import {
   Search, MapPin, TrendingDown, ShieldCheck, Clock, Heart,
   ArrowRight, Star, Zap, DollarSign, ShoppingCart, BarChart3, Leaf, Store
 } from "lucide-react";
-import shoppingVideo from "@/assets/budget-bites-shopping.mp4.asset.json";
+
 
 const deals = [
   { name: "Organic Eggs (12pk)", store: "Trader Joe's", price: "$3.49", originalPrice: "$4.99", discount: "30%", distance: "0.8 mi" },
