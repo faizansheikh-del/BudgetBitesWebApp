@@ -290,6 +290,25 @@ export default function HealthyMeals() {
                     <p className="text-[10px] text-muted-foreground">time</p>
                   </div>
                 </div>
+
+                <div className="flex gap-2 mt-4">
+                  <Button
+                    size="sm"
+                    className="flex-1 text-xs"
+                    onClick={() => setSelectedMeal(meal)}
+                  >
+                    View Recipe
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant={shoppingList.includes(meal.name) ? "secondary" : "outline"}
+                    className="flex-1 text-xs"
+                    onClick={() => handleAddToList(meal)}
+                  >
+                    <Heart className={`h-3.5 w-3.5 mr-1 ${shoppingList.includes(meal.name) ? "fill-primary text-primary" : ""}`} />
+                    {shoppingList.includes(meal.name) ? "Saved" : "Save Meal"}
+                  </Button>
+                </div>
               </div>
             </div>
           ))}
