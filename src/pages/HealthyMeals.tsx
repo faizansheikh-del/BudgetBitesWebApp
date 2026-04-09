@@ -213,6 +213,7 @@ export default function HealthyMeals() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [weeklyPlan, setWeeklyPlan] = useState(() => generateWeeklyPlan());
   const [shoppingList, setShoppingList] = useState<string[]>([]);
+  const [showShoppingList, setShowShoppingList] = useState(false);
   const { toast } = useToast();
 
   const weeklyTotal = weeklyPlan.reduce(
