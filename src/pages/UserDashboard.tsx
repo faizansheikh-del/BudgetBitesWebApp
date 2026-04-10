@@ -128,17 +128,27 @@ export default function UserDashboard() {
         <div className="grid sm:grid-cols-3 gap-4 mb-8">
           <div className="bg-card rounded-xl border border-border p-5">
             <p className="text-sm text-muted-foreground">Monthly Budget</p>
-            <p className="text-2xl font-bold text-foreground mt-1">$350.00</p>
-            <p className="text-xs text-primary mt-1">On track</p>
+            <p className="text-2xl font-bold text-foreground mt-1">
+              {budgetLoading ? "..." : budgetAmount > 0 ? `$${budgetAmount.toFixed(2)}` : "—"}
+            </p>
+            <p className="text-xs text-primary mt-1">
+              {budgetAmount === 0 ? <Link to="/budget" className="underline">Set budget →</Link> : budgetStatus}
+            </p>
           </div>
           <div className="bg-card rounded-xl border border-border p-5">
             <p className="text-sm text-muted-foreground">Spent This Month</p>
-            <p className="text-2xl font-bold text-foreground mt-1">$278.00</p>
-            <p className="text-xs text-primary mt-1">-12% vs. last month</p>
+            <p className="text-2xl font-bold text-foreground mt-1">
+              {budgetLoading ? "..." : `$${totalSpent.toFixed(2)}`}
+            </p>
+            <p className="text-xs text-primary mt-1">
+              {budgetAmount > 0 ? `${Math.round((totalSpent / budgetAmount) * 100)}% of budget` : "—"}
+            </p>
           </div>
           <div className="bg-card rounded-xl border border-border p-5">
-            <p className="text-sm text-muted-foreground">Total Saved</p>
-            <p className="text-2xl font-bold text-primary mt-1">$147.30</p>
+            <p className="text-sm text-muted-foreground">Remaining</p>
+            <p className={`text-2xl font-bold mt-1 ${remaining >= 0 ? "text-primary" : "text-destructive"}`}>
+              {budgetLoading ? "..." : budgetAmount > 0 ? `$${remaining.toFixed(2)}` : "—"}
+            </p>
             <p className="text-xs text-muted-foreground mt-1">This month</p>
           </div>
         </div>
