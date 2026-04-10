@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { PublicLayout } from "@/components/PublicLayout";
 import { useShoppingList } from "@/contexts/ShoppingListContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -27,14 +29,53 @@ const notifications = [
   { text: "New store added: Sprouts Farmers Market", time: "1d ago", type: "info" },
 ];
 
+function getMonthStart(d: Date = new Date()) {
+  return new Date(d.getFullYear(), d.getMonth(), 1).toISOString().slice(0, 10);
+}
+
 export default function UserDashboard() {
   const { items: savedList, removeItem, addManualItem, totalCost } = useShoppingList();
+  const { user } = useAuth();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [newName, setNewName] = useState("");
   const [newQty, setNewQty] = useState("1");
   const [newPrice, setNewPrice] = useState("");
 
-  const totalList = totalCost;
+  // Budget data from DB
+  const [budgetAmount, setBudgetAmount] = useState(0);
+  const [totalSpent, setTotalSpent] = useState(0);
+  const [budgetLoading, setBudgetLoading] = useState(true);
+
+  useEffect(() => {
+    if (!user) { setBudgetLoading(false); return; }
+    const monthStart = getMonthStart();
+    async function loadBudget() {
+      setBudgetLoading(true);
+      const { data: b } = await supabase
+        .from("budgets")
+        .select("*")
+        .eq("user_id", user!.id)
+        .eq("month", monthStart)
+        .maybeSingle();
+      if (b) {
+        setBudgetAmount(Number(b.amount));
+        const { data: exps } = await supabase
+          .from("budget_expenses")
+          .select("amount")
+          .eq("budget_id", b.id);
+        const spent = (exps || []).reduce((s, e) => s + Number(e.amount), 0);
+        setTotalSpent(spent);
+      } else {
+        setBudgetAmount(0);
+        setTotalSpent(0);
+      }
+      setBudgetLoading(false);
+    }
+    loadBudget();
+  }, [user]);
+
+  const remaining = budgetAmount - totalSpent;
+  const budgetStatus = budgetAmount === 0 ? "No budget set" : remaining > budgetAmount * 0.3 ? "On track" : remaining > 0 ? "Getting close" : "Over budget!";
 
   const handleAddItem = () => {
     const name = newName.trim();
@@ -87,17 +128,27 @@ export default function UserDashboard() {
         <div className="grid sm:grid-cols-3 gap-4 mb-8">
           <div className="bg-card rounded-xl border border-border p-5">
             <p className="text-sm text-muted-foreground">Monthly Budget</p>
-            <p className="text-2xl font-bold text-foreground mt-1">$350.00</p>
-            <p className="text-xs text-primary mt-1">On track</p>
+            <p className="text-2xl font-bold text-foreground mt-1">
+              {budgetLoading ? "..." : budgetAmount > 0 ? `$${budgetAmount.toFixed(2)}` : "—"}
+            </p>
+            <p className="text-xs text-primary mt-1">
+              {budgetAmount === 0 ? <Link to="/budget" className="underline">Set budget →</Link> : budgetStatus}
+            </p>
           </div>
           <div className="bg-card rounded-xl border border-border p-5">
             <p className="text-sm text-muted-foreground">Spent This Month</p>
-            <p className="text-2xl font-bold text-foreground mt-1">$278.00</p>
-            <p className="text-xs text-primary mt-1">-12% vs. last month</p>
+            <p className="text-2xl font-bold text-foreground mt-1">
+              {budgetLoading ? "..." : `$${totalSpent.toFixed(2)}`}
+            </p>
+            <p className="text-xs text-primary mt-1">
+              {budgetAmount > 0 ? `${Math.round((totalSpent / budgetAmount) * 100)}% of budget` : "—"}
+            </p>
           </div>
           <div className="bg-card rounded-xl border border-border p-5">
-            <p className="text-sm text-muted-foreground">Total Saved</p>
-            <p className="text-2xl font-bold text-primary mt-1">$147.30</p>
+            <p className="text-sm text-muted-foreground">Remaining</p>
+            <p className={`text-2xl font-bold mt-1 ${remaining >= 0 ? "text-primary" : "text-destructive"}`}>
+              {budgetLoading ? "..." : budgetAmount > 0 ? `$${remaining.toFixed(2)}` : "—"}
+            </p>
             <p className="text-xs text-muted-foreground mt-1">This month</p>
           </div>
         </div>
@@ -182,7 +233,7 @@ export default function UserDashboard() {
               </div>
               <div className="flex justify-between items-center mt-4 pt-3 border-t border-border">
                 <span className="text-sm font-medium text-foreground">Estimated Total</span>
-                <span className="text-lg font-bold text-primary">${totalList.toFixed(2)}</span>
+                <span className="text-lg font-bold text-primary">${totalCost.toFixed(2)}</span>
               </div>
             </div>
 
