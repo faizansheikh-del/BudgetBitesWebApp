@@ -78,6 +78,95 @@ const demoRecipes: Recipe[] = [
       { id: "i15", recipe_id: "r4", product_name: "Green Beans", quantity: 0.5, unit: "lb", product_id: null },
     ],
   },
+  {
+    id: "r5", name: "Egg Fried Rice", description: "Use leftover rice for this 15-minute meal",
+    servings: 3, prep_time: 5, cook_time: 10, image_url: "", instructions: "1. Scramble eggs.\n2. Stir-fry rice with veggies.\n3. Add soy sauce and sesame oil.",
+    tags: ["Budget", "Quick", "One-Pot"],
+    ingredients: [
+      { id: "i16", recipe_id: "r5", product_name: "Eggs (12pk)", quantity: 3, unit: "whole", product_id: null },
+      { id: "i17", recipe_id: "r5", product_name: "Brown Rice (2lb)", quantity: 0.5, unit: "lb", product_id: null },
+      { id: "i18", recipe_id: "r5", product_name: "Frozen Peas", quantity: 0.5, unit: "cup", product_id: null },
+      { id: "i19", recipe_id: "r5", product_name: "Soy Sauce", quantity: 2, unit: "tbsp", product_id: null },
+    ],
+  },
+  {
+    id: "r6", name: "Creamy Tomato Soup", description: "Comfort food classic made from pantry staples",
+    servings: 4, prep_time: 5, cook_time: 25, image_url: "", instructions: "1. Sauté onion and garlic.\n2. Add canned tomatoes and broth.\n3. Blend and stir in cream.",
+    tags: ["Easy", "Vegetarian", "Comfort"],
+    ingredients: [
+      { id: "i20", recipe_id: "r6", product_name: "Canned Tomatoes 28oz", quantity: 2, unit: "can", product_id: null },
+      { id: "i21", recipe_id: "r6", product_name: "Heavy Cream", quantity: 0.5, unit: "cup", product_id: null },
+      { id: "i22", recipe_id: "r6", product_name: "Onion", quantity: 1, unit: "whole", product_id: null },
+      { id: "i23", recipe_id: "r6", product_name: "Garlic", quantity: 3, unit: "cloves", product_id: null },
+    ],
+  },
+  {
+    id: "r7", name: "Turkey & Veggie Wraps", description: "Healthy high-protein lunch ready in minutes",
+    servings: 2, prep_time: 10, cook_time: 0, image_url: "", instructions: "1. Layer turkey, veggies, and hummus on tortilla.\n2. Roll tightly.\n3. Slice and serve.",
+    tags: ["Quick", "Healthy", "High-Protein"],
+    ingredients: [
+      { id: "i24", recipe_id: "r7", product_name: "Deli Turkey", quantity: 0.5, unit: "lb", product_id: null },
+      { id: "i25", recipe_id: "r7", product_name: "Flour Tortillas", quantity: 2, unit: "whole", product_id: null },
+      { id: "i26", recipe_id: "r7", product_name: "Hummus", quantity: 0.25, unit: "cup", product_id: null },
+      { id: "i27", recipe_id: "r7", product_name: "Spinach", quantity: 1, unit: "cup", product_id: null },
+    ],
+  },
+  {
+    id: "r8", name: "Banana Oat Pancakes", description: "3-ingredient healthy breakfast the whole family loves",
+    servings: 2, prep_time: 5, cook_time: 10, image_url: "", instructions: "1. Mash bananas.\n2. Mix with oats and eggs.\n3. Cook on griddle until golden.",
+    tags: ["Budget", "Breakfast", "Healthy"],
+    ingredients: [
+      { id: "i28", recipe_id: "r8", product_name: "Bananas", quantity: 2, unit: "whole", product_id: null },
+      { id: "i29", recipe_id: "r8", product_name: "Rolled Oats", quantity: 1, unit: "cup", product_id: null },
+      { id: "i30", recipe_id: "r8", product_name: "Eggs (12pk)", quantity: 2, unit: "whole", product_id: null },
+    ],
+  },
+  {
+    id: "r9", name: "Slow Cooker Chili", description: "Set it and forget it — feeds a crowd for cheap",
+    servings: 8, prep_time: 15, cook_time: 240, image_url: "", instructions: "1. Brown ground beef.\n2. Add beans, tomatoes, and spices to slow cooker.\n3. Cook on low 4 hours.",
+    tags: ["Budget", "Comfort", "Meal Prep"],
+    ingredients: [
+      { id: "i31", recipe_id: "r9", product_name: "Ground Beef (1lb)", quantity: 1, unit: "lb", product_id: null },
+      { id: "i32", recipe_id: "r9", product_name: "Black Beans (canned)", quantity: 2, unit: "can", product_id: null },
+      { id: "i33", recipe_id: "r9", product_name: "Canned Tomatoes 28oz", quantity: 1, unit: "can", product_id: null },
+      { id: "i34", recipe_id: "r9", product_name: "Onion", quantity: 1, unit: "whole", product_id: null },
+      { id: "i35", recipe_id: "r9", product_name: "Chili Powder", quantity: 2, unit: "tbsp", product_id: null },
+    ],
+  },
+  {
+    id: "r10", name: "Mediterranean Quinoa Bowl", description: "Colorful grain bowl packed with fiber and flavor",
+    servings: 3, prep_time: 10, cook_time: 15, image_url: "", instructions: "1. Cook quinoa.\n2. Chop cucumber, tomatoes, olives.\n3. Toss with lemon dressing and feta.",
+    tags: ["Healthy", "Vegetarian", "Meal Prep"],
+    ingredients: [
+      { id: "i36", recipe_id: "r10", product_name: "Quinoa (1lb)", quantity: 0.5, unit: "lb", product_id: null },
+      { id: "i37", recipe_id: "r10", product_name: "Cucumber", quantity: 1, unit: "whole", product_id: null },
+      { id: "i38", recipe_id: "r10", product_name: "Cherry Tomatoes", quantity: 1, unit: "cup", product_id: null },
+      { id: "i39", recipe_id: "r10", product_name: "Feta Cheese", quantity: 0.25, unit: "cup", product_id: null },
+      { id: "i40", recipe_id: "r10", product_name: "Lemon", quantity: 1, unit: "whole", product_id: null },
+    ],
+  },
+  {
+    id: "r11", name: "Garlic Butter Shrimp Pasta", description: "Restaurant-quality dinner in under 20 minutes",
+    servings: 4, prep_time: 5, cook_time: 15, image_url: "", instructions: "1. Cook pasta.\n2. Sauté shrimp in garlic butter.\n3. Toss together with parsley and lemon.",
+    tags: ["Quick", "High-Protein", "Easy"],
+    ingredients: [
+      { id: "i41", recipe_id: "r11", product_name: "Shrimp (1lb)", quantity: 1, unit: "lb", product_id: null },
+      { id: "i42", recipe_id: "r11", product_name: "Spaghetti", quantity: 1, unit: "lb", product_id: null },
+      { id: "i43", recipe_id: "r11", product_name: "Butter", quantity: 3, unit: "tbsp", product_id: null },
+      { id: "i44", recipe_id: "r11", product_name: "Garlic", quantity: 4, unit: "cloves", product_id: null },
+    ],
+  },
+  {
+    id: "r12", name: "Veggie Quesadillas", description: "Crispy, cheesy, and ready in 10 minutes flat",
+    servings: 2, prep_time: 5, cook_time: 5, image_url: "", instructions: "1. Fill tortilla with cheese, peppers, corn.\n2. Cook in pan until crispy.\n3. Slice and serve with salsa.",
+    tags: ["Quick", "Vegetarian", "Budget"],
+    ingredients: [
+      { id: "i45", recipe_id: "r12", product_name: "Flour Tortillas", quantity: 4, unit: "whole", product_id: null },
+      { id: "i46", recipe_id: "r12", product_name: "Shredded Cheese", quantity: 1, unit: "cup", product_id: null },
+      { id: "i47", recipe_id: "r12", product_name: "Bell Pepper", quantity: 1, unit: "whole", product_id: null },
+      { id: "i48", recipe_id: "r12", product_name: "Frozen Corn", quantity: 0.5, unit: "cup", product_id: null },
+    ],
+  },
 ];
 
 export default function MealPlanningPage() {
