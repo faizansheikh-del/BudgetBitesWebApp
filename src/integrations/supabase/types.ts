@@ -265,6 +265,42 @@ export type Database = {
         }
         Relationships: []
       }
+      loyalty_programs: {
+        Row: {
+          created_at: string
+          current_points: number
+          id: string
+          program_name: string
+          reward_description: string | null
+          reward_threshold: number
+          store_name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_points?: number
+          id?: string
+          program_name?: string
+          reward_description?: string | null
+          reward_threshold?: number
+          store_name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_points?: number
+          id?: string
+          program_name?: string
+          reward_description?: string | null
+          reward_threshold?: number
+          store_name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       notification_preferences: {
         Row: {
           created_at: string
@@ -444,6 +480,77 @@ export type Database = {
         }
         Relationships: []
       }
+      receipt_items: {
+        Row: {
+          created_at: string
+          id: string
+          price: number
+          product_name: string
+          quantity: number
+          receipt_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          price?: number
+          product_name: string
+          quantity?: number
+          receipt_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          price?: number
+          product_name?: string
+          quantity?: number
+          receipt_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "receipt_items_receipt_id_fkey"
+            columns: ["receipt_id"]
+            isOneToOne: false
+            referencedRelation: "receipts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      receipts: {
+        Row: {
+          created_at: string
+          id: string
+          image_url: string | null
+          notes: string | null
+          purchase_date: string
+          store: string
+          total: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          notes?: string | null
+          purchase_date?: string
+          store?: string
+          total?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          notes?: string | null
+          purchase_date?: string
+          store?: string
+          total?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       recipe_ingredients: {
         Row: {
           created_at: string
@@ -531,6 +638,45 @@ export type Database = {
           servings?: number
           tags?: string[]
           updated_at?: string
+        }
+        Relationships: []
+      }
+      store_reviews: {
+        Row: {
+          checkout_speed: number
+          cleanliness: number
+          comment: string | null
+          created_at: string
+          freshness: number
+          id: string
+          price_accuracy: number
+          store_name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          checkout_speed?: number
+          cleanliness?: number
+          comment?: string | null
+          created_at?: string
+          freshness?: number
+          id?: string
+          price_accuracy?: number
+          store_name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          checkout_speed?: number
+          cleanliness?: number
+          comment?: string | null
+          created_at?: string
+          freshness?: number
+          id?: string
+          price_accuracy?: number
+          store_name?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
