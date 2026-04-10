@@ -18,9 +18,11 @@ serve(async (req) => {
     }
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseKey = Deno.env.get("SUPABASE_ANON_KEY") || Deno.env.get("SUPABASE_PUBLISHABLE_KEY")!;
-    if (!supabaseKey) {
-      throw new Error("Supabase key not found");
+    const supabaseKey = Deno.env.get("SUPABASE_ANON_KEY") || Deno.env.get("SUPABASE_PUBLISHABLE_KEY") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    if (!supabaseUrl || !supabaseKey) {
+      // Log available env vars for debugging (names only)
+      console.log("Available env vars:", [...Deno.env.toObject()].map(([k]) => k).join(", "));
+      throw new Error(`Missing env: URL=${!!supabaseUrl}, KEY=${!!supabaseKey}`);
     }
     const supabase = createClient(supabaseUrl, supabaseKey, {
       global: { headers: { Authorization: authHeader } },
