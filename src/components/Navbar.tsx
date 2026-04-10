@@ -146,7 +146,6 @@ export function Navbar() {
                 <Link to="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
                   <img src={budgetBitesLogo} alt="Budget Bites" className="h-9 w-auto" />
                 </Link>
-                </Link>
               </div>
               <nav className="flex-1 p-4 space-y-3 overflow-y-auto">
                 {topLinks.map((link) => (
