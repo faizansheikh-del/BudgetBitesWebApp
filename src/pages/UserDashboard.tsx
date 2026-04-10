@@ -99,7 +99,7 @@ export default function UserDashboard() {
       <div className="container px-4 md:px-6 py-8">
         {/* Welcome */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground">Welcome back, Sarah 👋</h1>
+          <h1 className="text-3xl font-bold text-foreground">Welcome back, {profile?.full_name?.split(" ")[0] || "there"} 👋</h1>
           <p className="text-muted-foreground mt-1">Here's your grocery savings overview</p>
         </div>
 
