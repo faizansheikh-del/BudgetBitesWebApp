@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Search, MapPin, ArrowUpDown, Heart, ShoppingCart, Loader2, Check, X, Trash2 } from "lucide-react";
+import { Search, MapPin, ArrowUpDown, Heart, ShoppingCart, Loader2, Check, X, Trash2, Navigation } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useShoppingList } from "@/contexts/ShoppingListContext";
+import { useGeolocation, distanceMiles, GeoPosition } from "@/hooks/use-geolocation";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 type Product = {
@@ -24,6 +25,15 @@ type Product = {
   healthy: boolean;
 };
 
+const storeCoords: Record<string, GeoPosition> = {
+  "Aldi": { lat: 40.7580, lng: -73.9855 },
+  "Trader Joe's": { lat: 40.7505, lng: -73.9934 },
+  "Walmart": { lat: 40.7614, lng: -73.9776 },
+  "Costco": { lat: 40.7425, lng: -74.0061 },
+  "Whole Foods": { lat: 40.7420, lng: -73.9950 },
+  "Kroger": { lat: 40.7550, lng: -73.9870 },
+};
+
 export default function ComparePage() {
   const [query, setQuery] = useState("");
   const [sortBy, setSortBy] = useState("price");
@@ -32,6 +42,15 @@ export default function ComparePage() {
   const [loading, setLoading] = useState(true);
   const [showListDialog, setShowListDialog] = useState(false);
   const { items: listItems, addItem, removeItem, clearList, isInList, totalCost, totalSavings } = useShoppingList();
+  const { position, loading: geoLoading, error: geoError, refresh } = useGeolocation();
+
+  const getStoreDistance = (storeName: string, fallback: string) => {
+    if (!position) return fallback;
+    const coords = storeCoords[storeName];
+    if (!coords) return fallback;
+    const d = distanceMiles(position, coords);
+    return d < 0.1 ? "Nearby" : `${d.toFixed(1)} mi`;
+  };
 
   const toggleListItem = (product: Product) => {
     if (isInList(product.id)) {
@@ -65,6 +84,11 @@ export default function ComparePage() {
     .sort((a, b) => {
       if (sortBy === "price") return a.price - b.price;
       if (sortBy === "discount") return ((b.original_price - b.price) / b.original_price) - ((a.original_price - a.price) / a.original_price);
+      if (position) {
+        const aDist = storeCoords[a.store] ? distanceMiles(position, storeCoords[a.store]) : Infinity;
+        const bDist = storeCoords[b.store] ? distanceMiles(position, storeCoords[b.store]) : Infinity;
+        return aDist - bDist;
+      }
       return parseFloat(a.distance) - parseFloat(b.distance);
     });
 
@@ -75,6 +99,25 @@ export default function ComparePage() {
           <h1 className="text-3xl font-bold text-foreground">Compare Grocery Prices</h1>
           <p className="text-muted-foreground mt-1">Find the best deals across stores near you</p>
         </div>
+        <div className="flex items-center gap-2 mb-8">
+          {position ? (
+            <Badge variant="secondary" className="flex items-center gap-1.5 py-1.5 px-3">
+              <Navigation className="h-3.5 w-3.5 text-primary" />
+              <span className="text-xs">GPS Active — live distances</span>
+            </Badge>
+          ) : (
+            <Button variant="outline" size="sm" onClick={refresh} disabled={geoLoading} className="gap-2">
+              {geoLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Navigation className="h-4 w-4" />}
+              {geoLoading ? "Locating…" : "Use My Location"}
+            </Button>
+          )}
+        </div>
+
+        {geoError && (
+          <div className="mb-4 rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive">
+            {geoError}
+          </div>
+        )}
 
         {/* Search & Filters */}
         <div className="flex flex-col md:flex-row gap-3 mb-6">
@@ -143,7 +186,8 @@ export default function ComparePage() {
                   <h3 className="font-semibold text-foreground text-sm">{product.name}</h3>
                   <p className="text-xs text-muted-foreground">{product.brand} · {product.store}</p>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
-                    <MapPin className="h-3 w-3" />{product.distance}
+                    <MapPin className="h-3 w-3" />
+                    <span className={position ? "font-medium text-foreground" : ""}>{getStoreDistance(product.store, product.distance)}</span>
                   </div>
 
                   <div className="flex flex-wrap gap-1 mt-3">
