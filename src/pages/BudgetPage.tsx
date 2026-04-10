@@ -125,7 +125,7 @@ export default function BudgetPage() {
 
   // Derived stats
   const totalSpent = useMemo(() => expenses.reduce((s, e) => s + Number(e.amount), 0), [expenses]);
-  const monthlyBudget = budget?.amount ?? parseFloat(budgetAmount) || 350;
+  const monthlyBudget = budget?.amount ?? (parseFloat(budgetAmount) || 350);
   const remaining = monthlyBudget - totalSpent;
   const pct = monthlyBudget > 0 ? Math.min(Math.round((totalSpent / monthlyBudget) * 100), 100) : 0;
 
