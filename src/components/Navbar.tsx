@@ -73,7 +73,6 @@ export function Navbar() {
         <Link to="/" className="flex items-center gap-2">
           <img src={budgetBitesLogo} alt="Budget Bites" className="h-9 w-auto" />
         </Link>
-        </Link>
 
         {/* Desktop nav */}
         <nav className="hidden lg:flex items-center gap-1">
