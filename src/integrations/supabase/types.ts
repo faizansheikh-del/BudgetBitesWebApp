@@ -261,6 +261,39 @@ export type Database = {
           },
         ]
       }
+      community_prices: {
+        Row: {
+          created_at: string
+          id: string
+          price: number
+          product_name: string
+          reported_by: string
+          store: string
+          updated_at: string
+          upvotes: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          price: number
+          product_name: string
+          reported_by: string
+          store?: string
+          updated_at?: string
+          upvotes?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          price?: number
+          product_name?: string
+          reported_by?: string
+          store?: string
+          updated_at?: string
+          upvotes?: number
+        }
+        Relationships: []
+      }
       company_settings: {
         Row: {
           address: string | null
@@ -436,6 +469,35 @@ export type Database = {
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      price_votes: {
+        Row: {
+          created_at: string
+          id: string
+          price_report_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          price_report_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          price_report_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "price_votes_price_report_id_fkey"
+            columns: ["price_report_id"]
+            isOneToOne: false
+            referencedRelation: "community_prices"
             referencedColumns: ["id"]
           },
         ]
@@ -709,6 +771,103 @@ export type Database = {
         }
         Relationships: []
       }
+      shared_list_items: {
+        Row: {
+          added_by: string
+          checked: boolean
+          created_at: string
+          id: string
+          list_id: string
+          product_name: string
+          quantity: number
+          unit: string
+        }
+        Insert: {
+          added_by: string
+          checked?: boolean
+          created_at?: string
+          id?: string
+          list_id: string
+          product_name: string
+          quantity?: number
+          unit?: string
+        }
+        Update: {
+          added_by?: string
+          checked?: boolean
+          created_at?: string
+          id?: string
+          list_id?: string
+          product_name?: string
+          quantity?: number
+          unit?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shared_list_items_list_id_fkey"
+            columns: ["list_id"]
+            isOneToOne: false
+            referencedRelation: "shared_lists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      shared_list_members: {
+        Row: {
+          id: string
+          joined_at: string
+          list_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          joined_at?: string
+          list_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          joined_at?: string
+          list_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shared_list_members_list_id_fkey"
+            columns: ["list_id"]
+            isOneToOne: false
+            referencedRelation: "shared_lists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      shared_lists: {
+        Row: {
+          created_at: string
+          id: string
+          invite_code: string
+          name: string
+          owner_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          invite_code?: string
+          name?: string
+          owner_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          invite_code?: string
+          name?: string
+          owner_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       store_reviews: {
         Row: {
           checkout_speed: number
@@ -841,6 +1000,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      toggle_price_vote: { Args: { p_report_id: string }; Returns: boolean }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
