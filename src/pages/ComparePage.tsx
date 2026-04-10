@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Search, MapPin, ArrowUpDown, Heart, ShoppingCart, Loader2, Check, X, Trash2, Navigation } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useShoppingList } from "@/contexts/ShoppingListContext";
+import { PriceHistorySparkline } from "@/components/PriceHistorySparkline";
 import { useGeolocation, distanceMiles, GeoPosition } from "@/hooks/use-geolocation";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
@@ -203,15 +204,18 @@ export default function ComparePage() {
                     )}
                   </div>
 
-                  <div className="flex items-center justify-between mt-4">
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg font-bold text-primary">${product.price.toFixed(2)}</span>
-                      <span className="text-sm line-through text-muted-foreground">${product.original_price.toFixed(2)}</span>
-                    </div>
-                    <Badge variant="destructive" className="text-xs">
-                      -{Math.round(((product.original_price - product.price) / product.original_price) * 100)}%
-                    </Badge>
-                  </div>
+                  {/* Price History Sparkline */}
+                  <PriceHistorySparkline productId={product.id} currentPrice={product.price} />
+
+                  <div className="flex items-center justify-between mt-3">
+                     <div className="flex items-center gap-2">
+                       <span className="text-lg font-bold text-primary">${product.price.toFixed(2)}</span>
+                       <span className="text-sm line-through text-muted-foreground">${product.original_price.toFixed(2)}</span>
+                     </div>
+                     <Badge variant="destructive" className="text-xs">
+                       -{Math.round(((product.original_price - product.price) / product.original_price) * 100)}%
+                     </Badge>
+                   </div>
 
                   <Button
                     size="sm"
