@@ -12,7 +12,8 @@ const navLinks = [
   { label: "Meal Planning", path: "/meal-planning" },
   { label: "Stores", path: "/stores" },
   { label: "Budget Tracker", path: "/budget" },
-  { label: "Healthy Meals", path: "/healthy-meals" },
+  { label: "Receipts", path: "/receipts" },
+  { label: "Loyalty", path: "/loyalty" },
   { label: "Dashboard", path: "/dashboard" },
 ];
 
