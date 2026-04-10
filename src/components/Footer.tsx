@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Leaf } from "lucide-react";
+import budgetBitesLogo from "@/assets/budget-bites-logo.png";
 
 export function Footer() {
   return (
@@ -8,10 +8,7 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div className="col-span-2 md:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-                <Leaf className="h-4 w-4 text-primary-foreground" />
-              </div>
-              <span className="text-lg font-bold text-foreground">Budget Bites</span>
+              <img src={budgetBitesLogo} alt="Budget Bites" className="h-10 w-auto" />
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs">
               Save more on groceries, eat better, and shop smarter with real-time price comparison.
