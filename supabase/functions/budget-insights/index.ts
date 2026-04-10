@@ -17,13 +17,8 @@ serve(async (req) => {
       });
     }
 
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseKey = Deno.env.get("SUPABASE_ANON_KEY") || Deno.env.get("SUPABASE_PUBLISHABLE_KEY") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-    if (!supabaseUrl || !supabaseKey) {
-      // Log available env vars for debugging (names only)
-      console.log("Available env vars:", [...Deno.env.toObject()].map(([k]) => k).join(", "));
-      throw new Error(`Missing env: URL=${!!supabaseUrl}, KEY=${!!supabaseKey}`);
-    }
+    const supabaseUrl = Deno.env.get("SUPABASE_URL") || "https://lmgmubskmmgnbqohyndu.supabase.co";
+    const supabaseKey = Deno.env.get("SUPABASE_ANON_KEY") || Deno.env.get("SUPABASE_PUBLISHABLE_KEY") || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxtZ211YnNrbW1nbmJxb2h5bmR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3NTY2NzcsImV4cCI6MjA5MTMzMjY3N30.d8UvcQsmVvMhlV-IhTSpD7K_-Nn8arRtVjfekcJzX-s";
     const supabase = createClient(supabaseUrl, supabaseKey, {
       global: { headers: { Authorization: authHeader } },
     });
