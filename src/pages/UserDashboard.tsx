@@ -29,14 +29,53 @@ const notifications = [
   { text: "New store added: Sprouts Farmers Market", time: "1d ago", type: "info" },
 ];
 
+function getMonthStart(d: Date = new Date()) {
+  return new Date(d.getFullYear(), d.getMonth(), 1).toISOString().slice(0, 10);
+}
+
 export default function UserDashboard() {
   const { items: savedList, removeItem, addManualItem, totalCost } = useShoppingList();
+  const { user } = useAuth();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [newName, setNewName] = useState("");
   const [newQty, setNewQty] = useState("1");
   const [newPrice, setNewPrice] = useState("");
 
-  const totalList = totalCost;
+  // Budget data from DB
+  const [budgetAmount, setBudgetAmount] = useState(0);
+  const [totalSpent, setTotalSpent] = useState(0);
+  const [budgetLoading, setBudgetLoading] = useState(true);
+
+  useEffect(() => {
+    if (!user) { setBudgetLoading(false); return; }
+    const monthStart = getMonthStart();
+    async function loadBudget() {
+      setBudgetLoading(true);
+      const { data: b } = await supabase
+        .from("budgets")
+        .select("*")
+        .eq("user_id", user!.id)
+        .eq("month", monthStart)
+        .maybeSingle();
+      if (b) {
+        setBudgetAmount(Number(b.amount));
+        const { data: exps } = await supabase
+          .from("budget_expenses")
+          .select("amount")
+          .eq("budget_id", b.id);
+        const spent = (exps || []).reduce((s, e) => s + Number(e.amount), 0);
+        setTotalSpent(spent);
+      } else {
+        setBudgetAmount(0);
+        setTotalSpent(0);
+      }
+      setBudgetLoading(false);
+    }
+    loadBudget();
+  }, [user]);
+
+  const remaining = budgetAmount - totalSpent;
+  const budgetStatus = budgetAmount === 0 ? "No budget set" : remaining > budgetAmount * 0.3 ? "On track" : remaining > 0 ? "Getting close" : "Over budget!";
 
   const handleAddItem = () => {
     const name = newName.trim();
