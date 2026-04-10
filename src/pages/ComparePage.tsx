@@ -222,7 +222,11 @@ export default function ComparePage() {
                 <div key={name} className="bg-card rounded-xl border border-border overflow-hidden">
                   <div className="p-4 border-b border-border flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <span className="text-2xl">{variants[0].image}</span>
+                      {variants[0].image_url ? (
+                        <img src={variants[0].image_url} alt={name} className="h-12 w-12 rounded-lg object-cover shrink-0" />
+                      ) : (
+                        <span className="text-2xl">{variants[0].image}</span>
+                      )}
                       <div>
                         <h3 className="font-semibold text-foreground">{name}</h3>
                         <p className="text-xs text-muted-foreground">
