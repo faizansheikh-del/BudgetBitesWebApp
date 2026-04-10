@@ -18,6 +18,8 @@ import HealthyMeals from "./pages/HealthyMeals";
 import StoreDetail from "./pages/StoreDetail";
 import ReceiptsPage from "./pages/ReceiptsPage";
 import LoyaltyPage from "./pages/LoyaltyPage";
+import CommunityPricesPage from "./pages/CommunityPricesPage";
+import SharedListsPage from "./pages/SharedListsPage";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import NotFound from "./pages/NotFound";
@@ -43,6 +45,8 @@ const App = () => (
               <Route path="/budget" element={<BudgetPage />} />
               <Route path="/receipts" element={<ReceiptsPage />} />
               <Route path="/loyalty" element={<LoyaltyPage />} />
+              <Route path="/community-prices" element={<CommunityPricesPage />} />
+              <Route path="/shared-lists" element={<SharedListsPage />} />
               <Route path="/dashboard" element={<UserDashboard />} />
               <Route path="/store-dashboard" element={<StoreDashboard />} />
               <Route path="/healthy-meals" element={<HealthyMeals />} />

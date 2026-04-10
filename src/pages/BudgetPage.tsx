@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { DollarSign, TrendingDown, ShoppingCart, Target, Plus, Trash2, Pencil } from "lucide-react";
+import { BudgetInsights } from "@/components/BudgetInsights";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
@@ -320,6 +321,8 @@ export default function BudgetPage() {
                     </div>
                   )}
                 </div>
+
+                <BudgetInsights />
               </div>
             </div>
           </>
