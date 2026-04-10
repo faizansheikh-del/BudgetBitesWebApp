@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
-import { Menu, Leaf, ChevronDown, ShoppingCart, UtensilsCrossed, Wallet, LayoutDashboard } from "lucide-react";
+import { Menu, Leaf, ChevronDown, ShoppingCart, UtensilsCrossed, Wallet, Users, List } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   Collapsible,
@@ -31,6 +31,7 @@ const navGroups = [
       { label: "Compare Prices", path: "/compare" },
       { label: "Weekly Deals", path: "/deals" },
       { label: "Stores", path: "/stores" },
+      { label: "Community Prices", path: "/community-prices" },
     ],
   },
   {
@@ -38,6 +39,7 @@ const navGroups = [
     icon: UtensilsCrossed,
     links: [
       { label: "Meal Planning", path: "/meal-planning" },
+      { label: "Shared Lists", path: "/shared-lists" },
     ],
   },
   {
