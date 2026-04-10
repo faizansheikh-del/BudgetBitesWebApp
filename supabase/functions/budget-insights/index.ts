@@ -6,6 +6,9 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+const SUPABASE_URL = "https://lmgmubskmmgnbqohyndu.supabase.co";
+const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxtZ211YnNrbW1nbmJxb2h5bmR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3NTY2NzcsImV4cCI6MjA5MTMzMjY3N30.d8UvcQsmVvMhlV-IhTSpD7K_-Nn8arRtVjfekcJzX-s";
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
@@ -17,9 +20,7 @@ serve(async (req) => {
       });
     }
 
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseKey = Deno.env.get("SUPABASE_PUBLISHABLE_KEY")!;
-    const supabase = createClient(supabaseUrl, supabaseKey, {
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON, {
       global: { headers: { Authorization: authHeader } },
     });
 
@@ -30,7 +31,6 @@ serve(async (req) => {
       });
     }
 
-    // Fetch user's expenses for current month
     const monthStart = new Date();
     monthStart.setDate(1);
     monthStart.setHours(0, 0, 0, 0);
@@ -105,6 +105,8 @@ Provide insights in a friendly, encouraging tone. Include specific dollar amount
           status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
+      const errText = await aiResponse.text();
+      console.error("AI error:", aiResponse.status, errText);
       throw new Error(`AI gateway error: ${aiResponse.status}`);
     }
 
