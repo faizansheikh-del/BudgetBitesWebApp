@@ -181,7 +181,8 @@ export default function ComparePage() {
                   <h3 className="font-semibold text-foreground text-sm">{product.name}</h3>
                   <p className="text-xs text-muted-foreground">{product.brand} · {product.store}</p>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
-                    <MapPin className="h-3 w-3" />{product.distance}
+                    <MapPin className="h-3 w-3" />
+                    <span className={position ? "font-medium text-foreground" : ""}>{getStoreDistance(product.store, product.distance)}</span>
                   </div>
 
                   <div className="flex flex-wrap gap-1 mt-3">
