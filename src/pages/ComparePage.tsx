@@ -84,6 +84,11 @@ export default function ComparePage() {
     .sort((a, b) => {
       if (sortBy === "price") return a.price - b.price;
       if (sortBy === "discount") return ((b.original_price - b.price) / b.original_price) - ((a.original_price - a.price) / a.original_price);
+      if (position) {
+        const aDist = storeCoords[a.store] ? distanceMiles(position, storeCoords[a.store]) : Infinity;
+        const bDist = storeCoords[b.store] ? distanceMiles(position, storeCoords[b.store]) : Infinity;
+        return aDist - bDist;
+      }
       return parseFloat(a.distance) - parseFloat(b.distance);
     });
 
