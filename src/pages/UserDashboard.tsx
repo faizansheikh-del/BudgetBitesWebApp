@@ -233,7 +233,7 @@ export default function UserDashboard() {
               </div>
               <div className="flex justify-between items-center mt-4 pt-3 border-t border-border">
                 <span className="text-sm font-medium text-foreground">Estimated Total</span>
-                <span className="text-lg font-bold text-primary">${totalList.toFixed(2)}</span>
+                <span className="text-lg font-bold text-primary">${totalCost.toFixed(2)}</span>
               </div>
             </div>
 
