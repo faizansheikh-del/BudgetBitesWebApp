@@ -10,7 +10,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
-import { Menu, Leaf, ChevronDown, ShoppingCart, UtensilsCrossed, Wallet, Users, List } from "lucide-react";
+import { Menu, ChevronDown, ShoppingCart, UtensilsCrossed, Wallet, Users, List } from "lucide-react";
+import budgetBitesLogo from "@/assets/budget-bites-logo.png";
 import { cn } from "@/lib/utils";
 import {
   Collapsible,
@@ -70,10 +71,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl">
       <div className="container flex h-16 items-center justify-between px-4 md:px-6">
         <Link to="/" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-            <Leaf className="h-4 w-4 text-primary-foreground" />
-          </div>
-          <span className="text-lg font-bold text-foreground">Budget Bites</span>
+          <img src={budgetBitesLogo} alt="Budget Bites" className="h-9 w-auto" />
         </Link>
 
         {/* Desktop nav */}
@@ -146,10 +144,7 @@ export function Navbar() {
             <div className="flex flex-col h-full">
               <div className="flex items-center justify-between p-4 border-b border-border">
                 <Link to="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-                    <Leaf className="h-4 w-4 text-primary-foreground" />
-                  </div>
-                  <span className="text-lg font-bold">Budget Bites</span>
+                  <img src={budgetBitesLogo} alt="Budget Bites" className="h-9 w-auto" />
                 </Link>
               </div>
               <nav className="flex-1 p-4 space-y-3 overflow-y-auto">
