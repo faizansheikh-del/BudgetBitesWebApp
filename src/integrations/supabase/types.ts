@@ -304,6 +304,38 @@ export type Database = {
         }
         Relationships: []
       }
+      price_history: {
+        Row: {
+          id: string
+          price: number
+          product_id: string
+          recorded_at: string
+          store: string
+        }
+        Insert: {
+          id?: string
+          price: number
+          product_id: string
+          recorded_at?: string
+          store?: string
+        }
+        Update: {
+          id?: string
+          price?: number
+          product_id?: string
+          recorded_at?: string
+          store?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "price_history_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           brand: string
@@ -412,6 +444,96 @@ export type Database = {
         }
         Relationships: []
       }
+      recipe_ingredients: {
+        Row: {
+          created_at: string
+          id: string
+          product_id: string | null
+          product_name: string
+          quantity: number
+          recipe_id: string
+          unit: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          product_id?: string | null
+          product_name: string
+          quantity?: number
+          recipe_id: string
+          unit?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          product_id?: string | null
+          product_name?: string
+          quantity?: number
+          recipe_id?: string
+          unit?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recipe_ingredients_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recipe_ingredients_recipe_id_fkey"
+            columns: ["recipe_id"]
+            isOneToOne: false
+            referencedRelation: "recipes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      recipes: {
+        Row: {
+          cook_time: number
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          image_url: string | null
+          instructions: string | null
+          name: string
+          prep_time: number
+          servings: number
+          tags: string[]
+          updated_at: string
+        }
+        Insert: {
+          cook_time?: number
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          instructions?: string | null
+          name: string
+          prep_time?: number
+          servings?: number
+          tags?: string[]
+          updated_at?: string
+        }
+        Update: {
+          cook_time?: number
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          instructions?: string | null
+          name?: string
+          prep_time?: number
+          servings?: number
+          tags?: string[]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -429,6 +551,59 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      weekly_deals: {
+        Row: {
+          badge_type: string
+          created_at: string
+          deal_price: number
+          end_date: string
+          id: string
+          image_url: string | null
+          original_price: number
+          product_id: string | null
+          product_name: string
+          start_date: string
+          store: string
+          updated_at: string
+        }
+        Insert: {
+          badge_type?: string
+          created_at?: string
+          deal_price: number
+          end_date?: string
+          id?: string
+          image_url?: string | null
+          original_price: number
+          product_id?: string | null
+          product_name: string
+          start_date?: string
+          store?: string
+          updated_at?: string
+        }
+        Update: {
+          badge_type?: string
+          created_at?: string
+          deal_price?: number
+          end_date?: string
+          id?: string
+          image_url?: string | null
+          original_price?: number
+          product_id?: string | null
+          product_name?: string
+          start_date?: string
+          store?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "weekly_deals_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
