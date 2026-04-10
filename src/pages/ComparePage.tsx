@@ -25,6 +25,15 @@ type Product = {
   healthy: boolean;
 };
 
+const storeCoords: Record<string, GeoPosition> = {
+  "Aldi": { lat: 40.7580, lng: -73.9855 },
+  "Trader Joe's": { lat: 40.7505, lng: -73.9934 },
+  "Walmart": { lat: 40.7614, lng: -73.9776 },
+  "Costco": { lat: 40.7425, lng: -74.0061 },
+  "Whole Foods": { lat: 40.7420, lng: -73.9950 },
+  "Kroger": { lat: 40.7550, lng: -73.9870 },
+};
+
 export default function ComparePage() {
   const [query, setQuery] = useState("");
   const [sortBy, setSortBy] = useState("price");
@@ -33,6 +42,15 @@ export default function ComparePage() {
   const [loading, setLoading] = useState(true);
   const [showListDialog, setShowListDialog] = useState(false);
   const { items: listItems, addItem, removeItem, clearList, isInList, totalCost, totalSavings } = useShoppingList();
+  const { position, loading: geoLoading, error: geoError, refresh } = useGeolocation();
+
+  const getStoreDistance = (storeName: string, fallback: string) => {
+    if (!position) return fallback;
+    const coords = storeCoords[storeName];
+    if (!coords) return fallback;
+    const d = distanceMiles(position, coords);
+    return d < 0.1 ? "Nearby" : `${d.toFixed(1)} mi`;
+  };
 
   const toggleListItem = (product: Product) => {
     if (isInList(product.id)) {
