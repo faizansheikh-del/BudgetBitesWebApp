@@ -94,6 +94,25 @@ export default function ComparePage() {
           <h1 className="text-3xl font-bold text-foreground">Compare Grocery Prices</h1>
           <p className="text-muted-foreground mt-1">Find the best deals across stores near you</p>
         </div>
+        <div className="flex items-center gap-2 mb-8">
+          {position ? (
+            <Badge variant="secondary" className="flex items-center gap-1.5 py-1.5 px-3">
+              <Navigation className="h-3.5 w-3.5 text-primary" />
+              <span className="text-xs">GPS Active — live distances</span>
+            </Badge>
+          ) : (
+            <Button variant="outline" size="sm" onClick={refresh} disabled={geoLoading} className="gap-2">
+              {geoLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Navigation className="h-4 w-4" />}
+              {geoLoading ? "Locating…" : "Use My Location"}
+            </Button>
+          )}
+        </div>
+
+        {geoError && (
+          <div className="mb-4 rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive">
+            {geoError}
+          </div>
+        )}
 
         {/* Search & Filters */}
         <div className="flex flex-col md:flex-row gap-3 mb-6">
