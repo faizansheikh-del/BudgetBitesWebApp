@@ -6,6 +6,7 @@ import {
   MapPin, Star, Truck, ShoppingBag, CheckCircle2, ArrowLeft,
   Clock, Phone, DollarSign, TrendingDown, Heart
 } from "lucide-react";
+import { StoreReviews } from "@/components/StoreReviews";
 
 const storesData: Record<string, {
   name: string; type: string; distance: string; rating: number;
@@ -316,6 +317,9 @@ export default function StoreDetail() {
             <Button className="w-full rounded-lg" size="lg" asChild>
               <Link to="/compare">Compare Prices</Link>
             </Button>
+
+            {/* Store Reviews */}
+            <StoreReviews storeName={store.name} />
           </div>
         </div>
       </div>

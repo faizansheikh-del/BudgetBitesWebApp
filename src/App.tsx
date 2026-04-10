@@ -16,6 +16,8 @@ import UserDashboard from "./pages/UserDashboard";
 import StoreDashboard from "./pages/StoreDashboard";
 import HealthyMeals from "./pages/HealthyMeals";
 import StoreDetail from "./pages/StoreDetail";
+import ReceiptsPage from "./pages/ReceiptsPage";
+import LoyaltyPage from "./pages/LoyaltyPage";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import NotFound from "./pages/NotFound";
@@ -39,6 +41,8 @@ const App = () => (
               <Route path="/stores" element={<StoresPage />} />
               <Route path="/store/:slug" element={<StoreDetail />} />
               <Route path="/budget" element={<BudgetPage />} />
+              <Route path="/receipts" element={<ReceiptsPage />} />
+              <Route path="/loyalty" element={<LoyaltyPage />} />
               <Route path="/dashboard" element={<UserDashboard />} />
               <Route path="/store-dashboard" element={<StoreDashboard />} />
               <Route path="/healthy-meals" element={<HealthyMeals />} />
