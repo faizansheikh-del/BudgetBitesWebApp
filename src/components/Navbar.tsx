@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils";
 const navLinks = [
   { label: "Home", path: "/" },
   { label: "Compare Prices", path: "/compare" },
+  { label: "Deals", path: "/deals" },
+  { label: "Meal Planning", path: "/meal-planning" },
   { label: "Stores", path: "/stores" },
   { label: "Budget Tracker", path: "/budget" },
   { label: "Healthy Meals", path: "/healthy-meals" },
