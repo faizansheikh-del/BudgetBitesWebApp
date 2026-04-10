@@ -35,7 +35,7 @@ function getMonthStart(d: Date = new Date()) {
 
 export default function UserDashboard() {
   const { items: savedList, removeItem, addManualItem, totalCost } = useShoppingList();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [newName, setNewName] = useState("");
   const [newQty, setNewQty] = useState("1");
