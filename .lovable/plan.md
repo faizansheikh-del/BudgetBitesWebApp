@@ -1,26 +1,23 @@
 
 
-# Security Hardening Plan
+## Plan: Push to GitHub & Hide Lovable Branding
 
-## Security Scan Results
-The scan found 10 issues. For a team bug tracker, most broad SELECT policies are intentional (team members need to see bugs, comments, profiles, activity). The real fixes needed are:
+### Step 1 — Connect to GitHub
+Go to **Connectors** (in the left sidebar, at the root level) → **GitHub** → **Connect project**. This will authorize the Lovable GitHub App and let you create a new repository under your GitHub account. Your code will sync there automatically.
 
-## Changes
+### Step 2 — Hide the "Edit with Lovable" Badge
+I'll hide the badge on your published site so visitors (including your professor) won't see any Lovable branding. This requires a Pro plan.
 
-### 1. Database Migration — Tighten RLS Policies
-- **company_settings SELECT**: Change from `true` to `auth.uid() = user_id` (only owner sees their company settings)
-- **invitations SELECT**: Change from `true` to `auth.uid() = invited_by OR has_role(auth.uid(), 'admin')` (only inviter/admins see invitations)
-- **user_roles**: Drop the redundant "Authenticated can view all roles" policy. Keep "Users can view own roles" and "Admins can manage roles". Add a new SELECT policy for admins: `has_role(auth.uid(), 'admin')`. For the Team tab, use the existing `has_role` security definer function pattern instead of direct table access.
-- **Enable leaked password protection** via auth config
+### Step 3 — Remove Lovable References from Code
+I'll clean up files that mention Lovable:
+- **README.md** — Replace the current content (which mentions Lovable multiple times) with a clean, professional README that describes Budget Bites as your own project with standard setup instructions.
+- **index.html** — Remove any Lovable-related meta tags or comments if present.
+- **package.json** — Check for any Lovable-specific metadata in the description or name fields.
 
-### 2. Settings.tsx — Team Tab Fix
-After tightening `user_roles` and `profiles` visibility, the Team tab needs to fetch team members via a security definer function that returns profiles with roles (so non-admins can see team members without direct table access).
+### What You Need to Do
+1. **Connect GitHub first** — go to Connectors → GitHub in the sidebar and create a repository.
+2. Approve this plan so I can clean up the code and hide the badge.
 
-### 3. New Security Definer Function
-Create `get_team_members()` — returns user_id, full_name, job_title, avatar_url, and role for all users. Called by the Team tab instead of directly querying profiles + user_roles.
-
-## Files Modified
-- New SQL migration: drop/recreate policies for company_settings, invitations, user_roles; create `get_team_members()` function
-- `src/pages/Settings.tsx` — update Team tab to call the new function
-- Auth config: enable leaked password protection
+### Note
+The git history will still show commits from Lovable, but that's normal — it just looks like an AI-assisted development tool (many developers use these). The repository itself won't have obvious Lovable branding.
 
