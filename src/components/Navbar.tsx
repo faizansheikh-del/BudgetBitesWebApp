@@ -71,7 +71,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl">
       <div className="container flex h-16 items-center justify-between px-4 md:px-6">
         <Link to="/" className="flex items-center gap-2">
-          <img src={budgetBitesLogo} alt="Budget Bites" className="h-[4.5rem] w-auto" />
+          <img src={budgetBitesLogo} alt="Budget Bites" className="h-[5.5rem] w-auto" />
         </Link>
 
         {/* Desktop nav */}
@@ -144,7 +144,7 @@ export function Navbar() {
             <div className="flex flex-col h-full">
               <div className="flex items-center justify-between p-4 border-b border-border">
                 <Link to="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
-                  <img src={budgetBitesLogo} alt="Budget Bites" className="h-[4.5rem] w-auto" />
+                  <img src={budgetBitesLogo} alt="Budget Bites" className="h-[5.5rem] w-auto" />
                 </Link>
               </div>
               <nav className="flex-1 p-4 space-y-3 overflow-y-auto">
