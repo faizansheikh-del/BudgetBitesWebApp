@@ -8,7 +8,7 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div className="col-span-2 md:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-4">
-              <img src={budgetBitesLogo} alt="Budget Bites" className="h-14 w-auto" />
+              <img src={budgetBitesLogo} alt="Budget Bites" className="h-20 w-auto" />
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs">
               Save more on groceries, eat better, and shop smarter with real-time price comparison.
