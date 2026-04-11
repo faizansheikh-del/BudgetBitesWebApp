@@ -1,73 +1,70 @@
-# Welcome to your Lovable project
+# Budget Bites — Save More on Groceries, Eat Better
 
-## Project info
+Budget Bites is a smart grocery shopping companion that helps you compare prices across nearby stores, discover cheaper and healthier alternatives, track your spending, and stay within your budget.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Features
 
-## How can I edit this code?
+- **Price Comparison** — Compare grocery prices across multiple stores in your area
+- **Budget Tracking** — Set monthly budgets and track expenses by category
+- **AI-Powered Insights** — Get personalized spending advice and saving tips
+- **Community Prices** — Crowdsourced price reports with voting
+- **Meal Planning** — Plan meals and generate shopping lists
+- **Shared Lists** — Collaborate on shopping lists with family and friends
+- **Weekly Deals** — Browse current deals and promotions
+- **Receipt Scanning** — Track purchases by logging receipts
+- **Loyalty Programs** — Manage store loyalty cards and rewards
+- **Store Reviews** — Rate and review grocery stores
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+- **Frontend**: React 18, TypeScript, Vite, Tailwind CSS, shadcn/ui
+- **Backend**: Supabase (PostgreSQL, Auth, Edge Functions, Storage)
+- **AI**: Google Gemini for budget insights
+- **3D**: React Three Fiber for logo animations
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## Getting Started
 
-Changes made via Lovable will be committed automatically to this repo.
+### Prerequisites
 
-**Use your preferred IDE**
+- Node.js 18+ and npm
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Installation
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+```bash
+# Clone the repository
 git clone <YOUR_GIT_URL>
+cd budget-bites
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Install dependencies
+npm install
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The app will be available at `http://localhost:5173`.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Project Structure
 
-**Use GitHub Codespaces**
+```
+src/
+├── components/     # Reusable UI components
+├── contexts/       # React context providers (Auth, ShoppingList)
+├── hooks/          # Custom React hooks
+├── pages/          # Page-level components
+├── integrations/   # Backend client configuration
+└── assets/         # Static assets
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Environment Variables
 
-## What technologies are used for this project?
+Create a `.env` file with the following variables:
 
-This project is built with:
+```
+VITE_SUPABASE_URL=<your-supabase-url>
+VITE_SUPABASE_PUBLISHABLE_KEY=<your-supabase-anon-key>
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## License
 
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+MIT
